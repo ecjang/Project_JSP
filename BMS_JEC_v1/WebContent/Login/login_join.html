@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> 회원가입 </title>
+<!-------------------------------------------------------  -->
+	
+	<script type="text/javascript" src="../jQuery/jquery-1.11.3.js"></script>
+	<script type="text/javascript">
+		$(function(){
+
+			$("#join").submit(function(){
+				
+				// 1. result를 추가
+				if($("#result").length==0){
+					$("#join").append("<div id='result'></div>");
+				}
+				
+				/*-----------------------------------------  */
+				
+				// 2-1. id
+				if(!$("input[name='user_id']").val()){
+					$("#result").html("아이디를 입력하세요.");
+					$("input[name='user_id']").focus();
+					return false;
+				}
+				
+				/*-----------------------------------------  */
+				// 2-2 pw
+				if(!$("input[name='user_pw']").val()){
+					$("#result").html("비밀번호를 입력하세요.")
+					$("inputp[name='user_pw']").focus();
+					return false;
+				}
+				
+				/*-----------------------------------------  */
+				// 2-3 juminNum
+				if(!$("input[name='juminNum']").val()){
+					$("#result").html("주민번호를 입력하세요");
+					$("input[name='juminNum']").focus();
+					return false;
+				}
+				
+				/*-----------------------------------------  */
+				// 2-4 gender
+				if(!$("input[name='gender']").is(":checked")){
+					$("#result").html("성별을 선택하세요.");
+					$("input[name='gender']:radio[value='남성']")
+						.attr("checked",true);
+					return false;
+				}
+				
+				/*-----------------------------------------  */
+				// 2-5 email
+				if(!$("input[name='email']").val()){
+					$("#result").html("이메일을 입력하세요.")
+					$("input[name='email']").focus();
+					return false;
+				}
+				
+				/*-----------------------------------------  */
+				// 2-6 url
+				if(!$("input[name='url']").val()){
+					$("#result").html("url을 입력하시오.");
+					$("input[name='url']").focus()
+					return false;
+				}
+				
+				/*-----------------------------------------  */
+				//2-7 phone
+				if(!$("input[name='phone']").val()){
+					$("#result").html("연락처를 입력하세요.");
+					$("input[name='phone']").focus();
+					return false;
+				}
+				
+				/*-----------------------------------------  */
+				// 2-8 취미
+				if(!$("input[name='habby']").is(":checked")){
+					$("#result").html("취미를 체크하세요");
+					$("input[name='hobby']:eq(0)").focus();
+					return false;
+				}
+				
+				var habby= $("input[name='happy']:checked");
+				var s_habby="";
+				
+				habby.each(function(){
+					s_habby += (s_habby =="") 
+					? $(this).val() : ", "+$(this).val();
+				});
+				
+				/*-----------------------------------------  */
+				// 2-9 직업
+				
+				if($("select[name='job'] > option:selected").index()<1){
+					$("#result").html("직업을 선택하세요.");
+					$("select[name='job']").focus();
+					return false;
+				}
+				
+				// 3. 정상적으로 입력된 경우 변수에 담는다.
+				var user_id	= $("input[name='user_id']").val();
+				var user_pw	= $("input[name='user_pw']").val();
+				var juminNum = $("input[name='juminNum']").val();
+				var gender	= $("input[name='gender']:checked").val();
+				var email	= $("input[name='email']").val();
+				var url		= $("input[name='url']").val();
+				var phone	= $("input[name='phone']").val();
+				var job		= $("select[name='job'] > option:selected").val();
+				
+				// 4. 정상적으로 입력된 경우 출력
+				$("#result").html(
+						"id : " 		+ user_id 	+ "<br/>" +
+						"pw : " 		+ user_pw 	+ "<br/>" +
+						"juminNum : " 	+ juminNum 	+ "<br/>" +
+						"gender : " 	+ gender 	+ "<br/>" +
+						"email : "		+ email 	+ "<br/>" +
+						"url : " 		+ url 		+ "<br/>" +
+						"phone : " 		+ phone	 	+ "<br/>" +
+						"habby : " 		+ s_habby 	+ "<br/>" +
+						"job : " 		+ job 		+ "<br/>" 
+				);
+				return false;
+			});
+			
+		});
+	</script>
+	
+<!-------------------------------------------------------  -->
+</head>
+<body>
+	<form name="myForm" id="join">
+		<div id="indiv">
+			
+			아이디<input type="text" name="user_id"><br>
+			
+			비밀번호<input type="password" name="user_pw"><br>
+			
+			주민번호<input type="text" name="juminNum"><br>
+			
+			성별<input type="radio" name="gender" value="남자"> 남성
+			<input type="radio" name="gender" value="여자"> 여성<br>
+			
+			이메일<input type="email" name="email"><br>
+			
+			URL<input type="url" name="url"><br>
+			
+			핸드폰<input type="text" name="phone"><br>
+			
+			취미<input type="checkbox" name="habby" value="취미1"> 취미1
+			<input type="checkbox" name="habby" value="취미2"> 취미2
+			<input type="checkbox" name="habby" value="취미3"> 취미3
+			<input type="checkbox" name="habby" value="취미4"> 취미4
+			<input type="checkbox" name="habby" value="취미5"> 취미5<br>
+			
+			직업<select name="job">
+				<option> 직업을 선택하세요. </option>
+				<option value="직업1"> 직업1 </option>
+				<option value="직업2"> 직업2 </option>
+				<option value="직업3"> 직업3 </option>
+				<option value="직업4"> 직업4 </option>
+				<option value="직업5"> 직업5 </option>
+			</select><br>
+			
+			<br><br>
+			<input type="submit" value="회원가입" class="myButton">
+			<input type="reset" value="다시작성" class="myButton">
+			
+			
+		</div>
+	</form>
+</body>
+</html>

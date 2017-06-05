@@ -1,0 +1,27 @@
+@CHARSET "UTF-8";
+body {margin:0px; padding:0px;}
+
+/* 메인 영역 나누기  */
+#main_container { margin: 0px; padding: 0px; width:100vw; height:100vh; text-align: center;  }
+#main_head, #main_section, #main_footer { background-color: silver; margin: 0px; padding: 0px;}
+#main_head { height:5vh;  }
+#main_head_table td { width:100vw; text-align:center; align:center; }
+#main_section { height:90vh; }
+#main_footer { height:5vh; }
+
+/* 서브영역 공통 부분  */
+#sub_contanier {  margin: 0px; padding: 0px; width: 100%; height: 100%; }
+#loginform { width: 100%; height: 100%; }
+#logintable { align:center; vertical-align: middle; text-align: center; }
+
+
+
+
+
+
+
+
+
+
+
+

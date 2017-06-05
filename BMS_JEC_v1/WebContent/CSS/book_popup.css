@@ -1,0 +1,86 @@
+CHARSET "UTF-8";
+
+#login_pop {				/* 팝업창  */
+	width: 100vw;			/* 가로는 화면너비  */
+	height: 100vh;			/* 세로는 화면높이  */
+	display: none ;			/* 숨겨진 상태로 시작  */
+	position: fixed;		/* 위치 고정  */
+	top:0px; left:0px;		/* 제일 위쪽, 제일 왼쪽  */
+	
+	background:				/* 배경음영 설정  */
+		rgba(0,0,0,0.5);
+	z-index: 10;		
+}
+
+
+#login_pop_in {				/* 팝업창 내용  */
+	max-width:700px;		/* 팝업창 최대 너비 설정  */
+	width:90%;				/* 팝업창 가로 너비  */
+	padding:40px;			/* 안쪽 여백 */
+	position:absolute;		/* 위치는 절대값  */
+	top:50vh;				/* 상단위치 화면높이의 반 */
+	left:50vw;				/* 좌우위치 화면너이의 반 */
+	border-radius: 5px;		/* 가장자리 둥글게  */
+	background: #fff;		/* 배경색 설정  */	
+	transform:				/* x축으로 -50% y축으로 -50% 이동 */
+		translate(-50%, -50%);	
+	box-shadow:				/* 그림자  */
+		0px 2px 6px rgba(0,0,0,1);
+		
+	z-index: 10;	
+}
+
+#login_pop_out1{
+	color:black;			/* 글자색   */	
+	font-size:25px;			/* 글자크기 설정  */	
+	font-weight: bold;		/* 글자굻게 */	
+	text-align:center;		/* 글자 중앙정렬 */	
+	line-height: 100%;		/* 밑줄  */
+	cursor: pointer;		/* 마우스 포인터 변경  */
+}
+
+#login_pop_out1:hover {		/* 팝업창 종료 버튼 오버시  */	
+	color: #fe2323;			/* 글자색   */	
+	font-size:30px;			/* 글자크기 설정 : 크게  */	
+	cursor: pointer;		/* 마우스 포인터 변경  */
+	font-weight: bold;
+}	
+
+
+#login_pop_out2 {			/* 팝업창 종료 버튼  */
+	
+	color:#fff;				/* 글자색 흰색  */	
+	font-size:35px;			/* 글자크기 설정  */	
+	font-weight: bold;		/* 글자굻게 */	
+	text-align:center;		/* 글자 중앙정렬 */	
+	line-height: 100%;		/* 밑줄  */
+	
+	width:60px;				/* 가로 설정 */	
+	height:60px;			/* 세로 설정  */	
+	padding-top: 5px;		/* 안쪽 여백 설정  */	
+
+	position:absolute;		/* 위치를 절대값을 설정 */
+	top:8px; right:8px;		/* 위쪽, 오른쪽 각각 -8px */
+	border-radius: 100%;	/* 모서리 둥글게 : 원형으로 */
+	
+	transition:				/* 0.25초동안 부드럽게 */
+		ease 0.25s all;
+	transform:				/* x축, y축으로 -50% 이동 */
+		translate(50%, -50%);
+	background: 			/* 배경색 설정 */
+		rgba(0,0,0,0.8);
+}
+
+
+#login_pop_out2:hover {		/* 팝업창 종료 버튼 오버시  */	
+	
+	font-size:45px;			/* 글자크기 설정 : 크게  */	
+	text-decoration: none;	/* 밑줄 삭제  */
+	cursor: pointer;		/* 마우스 포인터 변경  */
+		transform:
+		translate(50%, -50%) /* x축, y축으로 -50% 이동 */
+		rotate(180deg);		/* 180도 회전 */	
+	background:				/* 배경색 설정 : 진하게 */	
+		#fe2323;
+	
+}
