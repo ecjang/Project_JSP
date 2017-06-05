@@ -1,0 +1,174 @@
+@CHARSET "UTF-8";
+
+/* -----------------------------------------------------  */
+
+/* 인덱스 css 설정  */
+
+
+#main_all {a
+	margin: 0px;
+	padding:0px;
+	overflow-x: hidden;		/* 넘어가는 부분은 스킵  */
+	overflow-y: auto;
+}
+
+h1 {
+	margin-top:12vh;
+	text-align: center;
+	font-size: 80px;
+}
+
+#main_content {
+	margin: 0px;
+	padding:0px;
+	position: absolute;		/* 절대위치  */		
+	top: 0;	left: 0;		/* 제일 위쪽, 제일 왼쪽  */
+	width: 300vw;			/* 전체화면은 너비의 3배 */
+	height: 130vh;			/* 높이 설정  */
+}
+
+.content {
+	margin: 0px;
+	padding:0px;
+	width: 99vw;			/* 한 화면은 너비의 1배  */
+	height: 130vh;			/* 한 화면은 높이의 설정  */
+	float: left;			/* 왼쪽으로 정렬 */
+}
+
+
+
+
+
+#c1 {
+	background-color: #85E4C4;
+	background-image: url("../Image/p3.jpg");
+	background-size: 100vw;
+}
+
+#c2 {
+	background-color: #5CC0C6;
+	background-image: url("../Image/p6.png");
+	
+}
+
+#c3 {
+	background-color: #EDC7E8;
+	background-image: url("../Image/p5.jpg");
+	background-size: 100vw;
+}
+
+.link {
+	padding: 0 5px;			/* 상단 메뉴 안쪽 여백  */	
+	color: #ffffff;			/* 상단메뉴 글자색 */
+	font-weight: bold;
+	font-size: 1.3em;
+}
+
+.link img {
+	width:30px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.link:hover {
+	color: #fe2323;
+}
+
+
+#menu {						
+	position: fixed; ;		/* 고정 위치  */
+	text-align: center;		/* 가운데 정렬 */
+	
+	top: 2vh;				/* 위쪽에서 화면 너비의 5%만큼 떨어짐  */
+	height: 2vh;
+	margin: 0 auto;			
+	min-width: 60%;			
+	margin-left: 20vw;		/* 왼쪽 마진 화면의 20%  */
+	margin-right: 20vw;		/* 오른쪽 마진 화면의 20%  */
+	padding: 15px;			/* 안쪽 여백 15px */
+	
+	z-index: 1;			
+	
+	cursor: pointer;		/* 오버시 마우스 포인터 변경  */
+	border-radius: 20px;	/* 외곽에 둥근 효과  */
+	
+	background-color: black;	/* 배경색 설정  */
+	box-shadow: 
+	0px 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+
+
+#search_bar {
+	padding: 0px;
+	margin: 0 28vw 0 28vw;
+	text-align: center;
+	width: 40vw;
+	height: 10vh;
+	border: 10px solid black;
+	border-collapse: collapse;
+	border-bottom-width: 13px;
+	background-color: black;
+}	
+
+
+
+
+#bar_left_text{
+	width: 100%;
+	height: 100%;
+	border-width: 0px;
+	font-size: 20px;
+}
+
+
+#bar_left  {
+	width: 75%;
+}
+
+
+#bar_rigth {
+	width: 25%;
+	padding: 0px;
+	color: white;
+	font-size: 30px;
+	font-weight: bold;
+	letter-spacing: 3px;
+	line-height: 9px;
+	
+}
+
+
+
+
+
+#main_display{				메인화면 디스플레이
+	text-align: center;
+	margin: 5vh 5vw 0 10vw;
+ 
+	min-width: 50vw;
+	max-width: 80vw;
+	min-height: 30vh;
+	max-height: 50vh;
+}
+
+
+
+#main_board{				/* 게시판 */
+	text-align: center;
+	/* maring: 0 5vw 0 5vw; */
+	min-width: 50vw;
+	max-width: 80vw;
+	height: auto;
+	padding: 0 5vw 0 5vw;
+	
+	
+}
+
+ 
+#login_pop{
+	
+	text-align: left;
+	
+}
+
