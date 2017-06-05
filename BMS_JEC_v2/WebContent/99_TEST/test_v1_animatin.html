@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> 애니메이션 연습 </title>
+
+<style>
+	.move :hover {transform : translate(100px, 200px);}
+	.scale :hover {transform : scale(1.2);}
+	
+	.origin {perspective: 200px;}
+	.rotate1 :hover {transform : rotatex(45deg);}
+	.rotate2 :hover {transform : rotatey(45deg);}
+	.rotate3 :hover {transform : rotatez(45deg);}
+	.rotate4 :hover {transform : rotate3d(2.4, 1.2, -1.5, 45deg);}
+	
+	.book {transform : rotateZ(10deg); }
+	.ltop .book {transform-origin : left top;}
+	.rtop .book {transform-origin : right top;}
+	.lbottom .book {transform-origin : left bottom;}
+	.rbottom .book {transform-origin : right bottom;}
+	
+	
+</style>
+
+</head>
+<body>
+
+
+<div class="origin">
+	<span class="move"><img src="../5_IMAGES/test.png"></span>
+	<span class="scale"><img src="../5_IMAGES/test.png"></span>
+	
+	<br><hr><br>
+	
+	<span class="rotate1"><img src="../5_IMAGES/test.png"></span>
+	<span class="rotate2"><img src="../5_IMAGES/test.png"></span>
+	<span class="rotate3"><img src="../5_IMAGES/test.png"></span>
+	<span class="rotate4"><img src="../5_IMAGES/test.png"></span>
+	
+	<br><hr><br>
+	
+	<span class="ltop"><img src="../5_IMAGES/test.png" class="book"></span>
+	<span class="rtop"><img src="../5_IMAGES/test.png" class="book"></span>
+	<span class="lbottom"><img src="../5_IMAGES/test.png" class="book"></span>
+	<span class="rbottom"><img src="../5_IMAGES/test.png" class="book"></span>
+	
+	<br><hr><br>
+
+</div>
+
+
+</body>
+</html>
