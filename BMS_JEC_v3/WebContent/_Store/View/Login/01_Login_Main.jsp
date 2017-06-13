@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="../../Asset/PreSetting.jsp" %>
+
+<c:if test="${headCheck==0}">
+	<%@ include file="../../Asset/PreSetting.jsp" %>
+</c:if>
 
 <!DOCTYPE html><html>
 <body onload="mainFocus()">

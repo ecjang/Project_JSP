@@ -66,9 +66,7 @@
 				
 				
 				<td align="left" style="margin-left: 20px;"> 	<!-- 제목 -->
-					
-					${d.REF_LEVEL}
-				
+	
 					<c:if test="${d.REF_LEVEL > 1}" >
 						<c:set var="wid" value="${(d.REF_LEVEL-1)*10}"/>
 						<img src="${jec}images/level.gif" border="0" width="${wid}" height="15">
@@ -77,6 +75,8 @@
 					<c:if test="${d.REF_LEVEL > 0}" >
 						<img src="${jec}images/re.gif" border="0" width="20" height="15" >
 					</c:if>
+				
+					
 				
 					<a href="board_detail.do?no=${d.NO}&pageNum=${pageNum}&number=${number+1}&kind=${kind}">
 						${d.TITLE}</a>

@@ -2,13 +2,13 @@
 <%@ include file="../../Asset/PreSetting.jsp" %>
 
 <!DOCTYPE html><html>
-<body onload="writeFocus()">
+<body onload="book_writeFocus()">
 
 	<% System.out.println("  -> 신간 도서 정보 입력  : 04_Book_List_Write_Form "); %>
 	<h3> <center> 신간 도서 정보 입력 페이지 </center> </h3>
 	
-	<form action="book_write_Pro.do" method="post" name="writeform" 
-		onsubmit="return writeCheck()" >
+	<form action="book_write_Pro.do" method="post" name="book_writeform" 
+		onsubmit="return book_writeCheck()" >
 		
 		<table align="center" style="width:60%; text-align: center;">
 			

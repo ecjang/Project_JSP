@@ -1,5 +1,5 @@
 @CHARSET "UTF-8";
-body {margin:0px; padding:0px;}
+body, iframe {margin:0px; padding:0px;}
 
 /* 메인 영역 나누기  */
 #main_container { margin: 0px; padding: 0px; width:100vw; height:100vh; text-align: center;  }
@@ -12,6 +12,7 @@ body {margin:0px; padding:0px;}
 #sub_contanier {  margin: 0px; padding: 0px; width: 100%; height: 100%; }
 #loginform { width: 100%; height: 100%; }
 #logintable { align:center; vertical-align: middle; text-align: center; }
+
 
 
 

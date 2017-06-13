@@ -11,13 +11,25 @@ public class BoardDTO {
 	private String CONTENT; 
 	private Timestamp REG_DATE ;
 	private int VIEWS ;
-	private int REF ;
-	private int REF_STEP ;
+	private int REF;
+	private int REF_STEP;
 	private int REF_LEVEL;
 	private String KIND ;
 	private String IP;
 	
 	
+	public int getREF_STEP() {
+		return REF_STEP;
+	}
+	public void setREF_STEP(int rEF_STEP) {
+		REF_STEP = rEF_STEP;
+	}
+	public int getREF_LEVEL() {
+		return REF_LEVEL;
+	}
+	public void setREF_LEVEL(int rEF_LEVEL) {
+		REF_LEVEL = rEF_LEVEL;
+	}
 	public int getM_NUM() {
 		return M_NUM;
 	}
@@ -66,18 +78,10 @@ public class BoardDTO {
 	public void setREF(int rEF) {
 		REF = rEF;
 	}
-	public int getREF_STEP() {
-		return REF_STEP;
-	}
-	public void setREF_STEP(int REF_STEP) {
-		REF_STEP = REF_STEP;
-	}
-	public int getREF_LEVEL() {
-		return REF_LEVEL;
-	}
-	public void setREF_LEVEL(int REF_LEVEL) {
-		REF_LEVEL = REF_LEVEL;
-	}
+	
+	
+	
+	
 	public String getKIND() {
 		return KIND;
 	}

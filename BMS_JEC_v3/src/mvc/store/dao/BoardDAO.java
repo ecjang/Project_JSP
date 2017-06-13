@@ -17,5 +17,4 @@ public interface BoardDAO {
 	public int insert(BoardDTO dto );
 	public String kindCheck(int no);
 	
-	
 }

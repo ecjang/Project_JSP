@@ -363,23 +363,102 @@ public class BookDAOIpml implements BookDAO {
 		return cnt;
 	}
 
-	
+	// searchCnt : 검색 량
+		@Override
+		public int searchCnt(String str) {
+			
+			System.out.println("    : searchCnt() 매소드 실행");
+			System.out.println("    : str 값 : " +str);
+			
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql = null;
+			int cnt = 0;
+			
+			try{
+				conn = data.getConnection();
+				sql = "SELECT COUNT(B_NUM) FROM BOOK WHERE TITLE LIKE '%'||?||'%'";
+				
+				
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setString(1,  str);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) 
+					cnt=rs.getInt("COUNT(B_NUM)");
+				System.out.println("    : 검색 개수  : " + cnt + "개");
+				
+			} catch ( SQLException e) { e.printStackTrace();
+				
+			} finally {
+				try{
+					if( conn != null ) conn.close();
+					if( pstmt != null ) pstmt.close();
+					if( rs != null ) rs.close();
+				} catch( SQLException e) { e.printStackTrace(); }
+			}
+
+			return cnt;
+		}
+
 	
 	// search() : 도서 검색
 	@Override
-	public BoardDTO search(String str) {
-		
-		BoardDTO dto = new BoardDTO();
-		
+	public ArrayList<BookDTO> booksearch(String str) {
+
+		System.out.println("    : booksearch() 매소드 실행");
+		ArrayList<BookDTO> dtos = null;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		
-		
-		
-		
-		
-		return null;
+		try{
+			conn = data.getConnection();
+			
+			String sql = "SELECT * FROM BOOK WHERE title like '%"+str+"%'"; 
+			
+				pstmt=conn.prepareStatement(sql);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()){
+					dtos = new ArrayList<>();
+					
+					do{
+						BookDTO dto = new BookDTO();
+						
+						dto.setB_num(rs.getInt("B_NUM"));
+						dto.setTitle(rs.getString("TITLE"));
+						dto.setSubtitle(rs.getString("SUBTITLE"));
+						dto.setAuthor(rs.getString("AUTHOR"));
+						dto.setQuan(rs.getInt("QUAN"));
+						dto.setPrice(rs.getInt("PRICE"));
+						dto.setReg_date(rs.getTimestamp("REG_DATE"));
+						dto.setKind(rs.getString("KIND"));
+						dto.setState(rs.getString("STATE"));
+						
+						dtos.add(dto);
+					
+				}while(rs.next());
+				System.out.println("    : 데이터 로딩 성공");
+			} else {
+				System.out.println("    : 데이터 로딩 중 오류 발생");
+			}
+			
+		} catch ( SQLException e) { e.printStackTrace();
+			
+		} finally {
+			try{
+				if( conn != null ) conn.close();
+				if( pstmt != null ) pstmt.close();
+				if( rs != null ) rs.close();
+			} catch( SQLException e) { e.printStackTrace(); }
+		}
+
+		return dtos;
+
 	}
 
+	
 	
 }

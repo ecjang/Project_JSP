@@ -2,11 +2,8 @@
 
 	<!-- 메인 뷰 영역 페이지  : 검색바, 신간 도서 -->
 
-	<div id="View_Main" class="View_Main_Box">
-		<jsp:include page="Main/02_Serch_00_Main.jsp"/>
-		<jsp:include page="Main/03_NewBook_00_Main.jsp"/>
-	</div>
-	
-	
-	
-
+	<iframe width="100%" height="100%" 
+		src="_Store/View/Main/01_Serch_Main.jsp"
+		
+		id="main_table_id" name="main_table" frameborder="0" 
+		scrolling="yes" align="center" style="margin:0px; padding:0px;"  ></iframe>	

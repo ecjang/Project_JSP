@@ -129,15 +129,13 @@ public class BoardDAOIpml implements BoardDAO {
 					dto.setREF_LEVEL(rs.getInt("REF_LEVEL"));
 					dto.setKIND(rs.getString("KIND"));
 					dto.setIP(rs.getString("IP"));
+					dto.setREF_LEVEL(rs.getInt("REF_LEVEL"));
+					dto.setREF_STEP(rs.getInt("REF_STEP"));
 					
 					dtos.add(dto);
 					
-					
-					
-					
 				}while(rs.next());
 				System.out.println("    : 데이터 로딩 성공");
-				
 				
 				
 			} else {
@@ -510,7 +508,7 @@ public class BoardDAOIpml implements BoardDAO {
 			int ref_level = dto.getREF_LEVEL();
 			
 			/*
-			System.out.println("    : num : " + num);
+			System.out.println("    : no : " + no);
 			System.out.println("    : ref : " + ref);
 			System.out.println("    : ref_step : " + ref_step);
 			System.out.println("    : ref_level : " + ref_level);
@@ -520,7 +518,7 @@ public class BoardDAOIpml implements BoardDAO {
 			
 			if( no == 0 ){ // 새글일 경우
 				System.out.println("    : 새글로 입력 ");
-				sql="SELECT MAX(num) FROM BOARD";
+				sql="SELECT MAX(no) FROM BOARD";
 				pstmt=conn.prepareStatement(sql);
 				rs = pstmt.executeQuery();
 				
@@ -545,6 +543,7 @@ public class BoardDAOIpml implements BoardDAO {
 				pstmt.executeUpdate();
 				ref_step++; 
 				ref_level++;
+				
 				/*
 				System.out.println("    : ref_step값 : " + ref_step );
 				System.out.println("    : ref_level값 : " + ref_level );
@@ -559,11 +558,11 @@ public class BoardDAOIpml implements BoardDAO {
 			pstmt.close();
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setInt( 1, dto.getNO() );
-			pstmt.setInt(2, dto.getM_NUM());
-			pstmt.setString(3, dto.getTITLE());
-			pstmt.setString(4, dto.getWRITER());
-			pstmt.setString(5, dto.getCONTENT());
+			
+			pstmt.setInt(1, dto.getM_NUM());
+			pstmt.setString(2, dto.getTITLE());
+			pstmt.setString(3, dto.getWRITER());
+			pstmt.setString(4, dto.getCONTENT());
 			pstmt.setTimestamp(5, dto.getREG_DATE());
 			pstmt.setInt(6, ref);
 			pstmt.setInt(7, ref_step);

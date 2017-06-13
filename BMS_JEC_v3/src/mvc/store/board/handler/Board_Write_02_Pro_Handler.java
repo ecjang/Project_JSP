@@ -27,7 +27,7 @@ public class Board_Write_02_Pro_Handler implements Command_Handler {
 			
 			BoardDTO dto = new BoardDTO();
 			
-			/*dto.setNO( Integer.parseInt( 	req.getParameter("no")) 	);*/
+			dto.setNO( Integer.parseInt( 	req.getParameter("no")) 	);
 			dto.setM_NUM( Integer.parseInt( req.getParameter("Mnum")) 	);
 			dto.setTITLE( req.getParameter("title") );
 			dto.setWRITER( req.getParameter("writer") );
@@ -44,19 +44,16 @@ public class Board_Write_02_Pro_Handler implements Command_Handler {
 			System.out.println( "  -> 입력받은 값들을 확인 \n "+ dto.toString() );
 			*/
 			
-			req.setAttribute("kind", kind);
+			BoardDAO dao = new BoardDAOIpml().getInstance();
 			
-			System.out.println( "  -> kind 값: " + dto.getKIND() );
+			int cnt = dao.insert(dto);
 
 			
-			BoardDAO dao = new BoardDAOIpml().getInstance();
-			int cnt = dao.insert(dto);
-			
-			req.setAttribute("cnt", cnt);
-			
 			int pageNum = Integer.parseInt(req.getParameter("pageNum"));  
-			
 			req.setAttribute("pageNum", pageNum );
+			req.setAttribute("cnt", cnt);
+			req.setAttribute("kind", kind);
+			
 			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

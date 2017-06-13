@@ -9,7 +9,7 @@ public interface BookDAO {
 	
 	static final int SALEABLE 			= 1;
 	static final int CART 				= 2;
-	static final int ORDER_COMPLETE 	= 3;
+	static final int ORDER 				= 3;
 	static final int PAY_WAITING 		= 4;
 	static final int PAY_COMPPLETE 		= 5;
 	static final int SHIPPING_READY 	= 6;
@@ -26,6 +26,7 @@ public interface BookDAO {
 	public int book_insert(BookDTO dto);
 	public int delete(int num);
 	
-	public BoardDTO search(String str);
+	public ArrayList<BookDTO> booksearch(String str);
+	public int searchCnt(String str);
 	
 }

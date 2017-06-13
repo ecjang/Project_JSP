@@ -26,6 +26,9 @@ import mvc.store.book.handler.Modify_02_Pro_Handler;
 import mvc.store.book.handler.Modify_01_From_Handler;
 import mvc.store.book.handler.Write_01_From_Handler;
 import mvc.store.book.handler.Write_02_Pro_Handler;
+import mvc.store.guest.handler.Guest_Cart_01_Pro_Handler;
+import mvc.store.main.handler.Main_Search_01_main_Pro_Handler;
+import mvc.store.main.handler.Main_Search_02_Detail_Pro_Handler;
 import mvc.store.member.handler.ConfirmId_Handler;
 import mvc.store.member.handler.Delete_Pro_Handler;
 import mvc.store.member.handler.Input_Form_Handler;
@@ -288,6 +291,45 @@ public class MFrontController extends HttpServlet {
 		}
 		
 		
+		/* 검색바   -----------------------------------------------------*/
+		// 도서 제목 검색
+		if (url.contains("/search_list.do")){
+			System.out.println("도서 제목 검색" );
+			String str = req.getParameter("str");
+			Main_Search_01_main_Pro_Handler handler = new Main_Search_01_main_Pro_Handler();
+			viewPage = handler.mainexecute(req, res, str);
+		
+		// 검색도서 상세페이지	
+		} else if (url.contains("/search_detail.do")){
+			System.out.println("도서 검색 상세페이지" );
+			String str = req.getParameter("str");
+			Main_Search_02_Detail_Pro_Handler handler = new Main_Search_02_Detail_Pro_Handler();
+			viewPage = handler.mainexecute(req, res , str);			
+			
+		}
+		
+		
+		
+		/* 고객메뉴   -----------------------------------------------------*/
+		
+		
+		if (url.contains("/guest_cart.do")){
+			System.out.println("장바구니로 이동" );
+			int b_num = 	Integer.parseInt( req.getParameter("b_num") 	);
+			int pageNum = 	Integer.parseInt( req.getParameter("pageNum")	);
+			int ordernum = 	Integer.parseInt( req.getParameter("ordernum")	);
+			String state = 	req.getParameter("state");
+			Guest_Cart_01_Pro_Handler handler = new Guest_Cart_01_Pro_Handler();
+			viewPage = handler.orderexecute(req, res, b_num, pageNum, ordernum, state);
+			
+			
+			
+			
+			
+			
+			
+		}
+		
 		
 		
 		/* viewPage로 페이지 이동 설정  -----------------------------------------------------*/
@@ -296,4 +338,9 @@ public class MFrontController extends HttpServlet {
 				req.getRequestDispatcher(viewPage);  //Dispatcher도 객체를 얻어와야 사용 가능
 		dispatcher.forward(req,res);
 		}
+	
+	
 }
+
+
+

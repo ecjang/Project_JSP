@@ -81,9 +81,9 @@
 	<input type="hidden" name="no" value="${no}">
 	<input type="hidden" name="Mnum" value="${Mnum}">
 	<input type="hidden" name="pageNum" value="${pageNum}">
+	<input type="hidden" name="kind" value="${kind}">
 	
 	<input type="hidden" name="ref" value="${ref}">
-	<input type="hidden" name="kind" value="${kind}">
 	<input type="hidden" name="ref_step" value="${ref_step}">
 	<input type="hidden" name="ref_level" value="${ref_level}">
 	

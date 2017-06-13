@@ -16,7 +16,18 @@ public class Board_Write_01_Form_Handler implements Command_Handler {
 		// 새글일 경우
 		int no=0, pageNum=0 ;
 		int ref=0 , ref_step=0 , ref_level=0;
+	
+		/*
+		onclick="window.location='board_write_from.do"
+				+ "?Mnum=${dto.getM_NUM()}"
+				+ "&no=${dto.NO}"
+				+ "&pageNum=${pageNum}"
+				+ "&kind=${param.kind}"
+				+ "&ref=${dto.REF}"
+				+ "&ref_step=${dto.REF_STEP}"
+				+ "&ref_level=${dto.REF_LEVEL}'">
 		
+		*/
 		
 		// 답글 일 경우
 		if ( req.getParameter("no")!= null ){
@@ -27,9 +38,6 @@ public class Board_Write_01_Form_Handler implements Command_Handler {
 			ref_step 	= Integer.parseInt	( req.getParameter("ref_step")	);
 			ref_level	 = Integer.parseInt	( req.getParameter("ref_level")	);
 			
-			System.out.println(" ref : " + ref);
-			System.out.println(" ref_step : " + ref_step);
-			System.out.println(" ref_level : " + ref_level);
 			
 		}
 		
@@ -43,8 +51,7 @@ public class Board_Write_01_Form_Handler implements Command_Handler {
 			
 		} else {
 			
-			kind = dao.kindCheck(no);
-			
+			/*kind = dao.kindCheck(no);*/
 			
 			int n = dao.getCount("all") + 1;
 			System.out.println("  -> 임시 번호 생성 : " + n);
@@ -57,14 +64,6 @@ public class Board_Write_01_Form_Handler implements Command_Handler {
 			req.setAttribute("ref_step", ref_step);
 			req.setAttribute("ref_level", ref_level);
 			req.setAttribute("kind", kind);
-			
-			System.out.println(
-					"ref : " + req.getAttribute("ref") + "\n"+
-					"ref_step : " + req.getAttribute("ref_step")	+ "\n"+
-					"ref_level : " + req.getAttribute("ref_level")
-					);
-			
-			
 			
 			
 			return "/_Store/View/Board/09_Board_Write_From.jsp"; 

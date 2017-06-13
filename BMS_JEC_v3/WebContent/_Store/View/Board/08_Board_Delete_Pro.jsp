@@ -28,10 +28,11 @@
 			</script>
 		</c:if>
 		
+
 		<c:if test="${dcnt==-1}">	<!-- 답변이 있는 경우 -->
 			<script type="text/javascript">
 				alert("답글이 있는 경우 삭제가 불가합니다.");	
-				window.location="board_list?pageNum=${pageNum}";
+				window.location="board_list.do?kind=${kind}&pageNum=${pageNum}";
 			</script>
 		</c:if>
 		
@@ -40,6 +41,15 @@
 				errorAlert(deleteError);		
 			</script>
 		</c:if>
+		
+		<c:if test="${dcnt!=0}">	<!-- 답변이 없는 경우  -->
+			<script type="text/javascript">
+				alert("정상적으로 삭제 되었습니다.");	
+				window.location="board_list.do?kind=${kind}&pageNum=${pageNum}";
+				
+			</script>
+		</c:if>
+		
 		
 	</c:if>
 

@@ -12,14 +12,16 @@ var msg_email		= "이메일을 입력하세요."			;
 var msg_emailChk	= "이메일 형식에 맞지 않습니다."		;
 var msg_confirmid	= "중복확인을 해주세요."			;
 var msg_writer 		= "작성자를 입력하세요." 			;
-var msg_subject 	= "제목를 입력하세요."			;
-var msg_content 	= "내용을 입력하세요."			;
-var msg_title 		= "제목을 입력하세요."			;
-var msg_subtitle 	= "부제를 입력하세요."			;
-var msg_price 		= "가격를 입력하세요."			;
+var msg_subject 	= "제목를 입력하세요."				;
+var msg_content 	= "내용을 입력하세요."				;
+var msg_title 		= "제목을 입력하세요."				;
+var msg_subtitle 	= "부제를 입력하세요."				;
+var msg_price 		= "가격를 입력하세요."				;
 var msg_quan 		= "재고량을 입력하세요."			;
-var msg_author		= "저자를 입력하세요."			;
+var msg_author		= "저자를 입력하세요."				;
 var msg_kind		= "책 종류를 입력하세요."			;
+var msg_author		= "저자를 입력해주세요."			;
+
 	
 var insertError = "회원가입에 실패했습니다. \n 잠시후 다시 시도해주세요.";
 var passwdError	= "입력하신 비밀번호가 일치하지 않습니다. \n 확인 후 다시 시도해주세요.";
@@ -211,15 +213,20 @@ function modifyCheck(){
 /*-----------------------------------------------------*/
 
 // 서적 등록
-function writeFocus(){
-	document.writeform.b_title.focus();
+function book_writeFocus(){
+	document.book_writeform.b_title.focus();
 }
 
-function writeCheck(){
-	var w = document.getElementsByName(writeform);
+function book_writeCheck(){
+	var w = document.getElementsByName(book_writeform);
 	if( !w[0].b_title.value ){
 		alert(msg_title); 
 		w[0].b_title.focus(); 
+		return false;
+		
+	} else if( !w[0].b_author.value ){
+		alert(msg_author); 
+		w[0].b_author.focus(); 
 		return false;
 		
 	} else if( !w[0].b_subtitle.value ){
@@ -231,15 +238,10 @@ function writeCheck(){
 		alert(msg_price); 
 		w[0].b_price.focus(); 
 		return false;
-		
+	
 	} else if( !w[0].b_quan.value ){
 		alert(msg_quan); 
 		w[0].b_quan.focus(); 
-		return false;
-	
-	} else if( !w[0].b_author.value ){
-		alert(msg_author); 
-		w[0].b_author.focus(); 
 		return false;
 	
 	} else if( !w[0].b_kind.value ){
@@ -319,6 +321,14 @@ function board_writeCheck(){
 	} 
 
 }
+
+
+/*-----------------------------------------------------*/
+
+// 메인 세부보기에서 장바구니 버튼 클릭
+
+
+
 
 
 

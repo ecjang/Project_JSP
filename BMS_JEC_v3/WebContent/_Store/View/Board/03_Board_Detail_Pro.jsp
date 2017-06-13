@@ -58,7 +58,7 @@
 				System.out.println( pageNum ); 
 				%>
 				 --%>
-				 
+
 				<input class="inputButton" type="button" value="글수정" 
 					onclick="window.location='board_modify_form.do?Mnum=${dto.getM_NUM()}&no=${dto.NO}&pageNum=${pageNum}&kind=${param.kind}'">
 
@@ -69,7 +69,7 @@
 					onclick="window.location='board_write_from.do?Mnum=${dto.getM_NUM()}&no=${dto.NO}&pageNum=${pageNum}&kind=${param.kind}&ref=${dto.REF}&ref_step=${dto.REF_STEP}&ref_level=${dto.REF_LEVEL}'">
 				
 				<input class="inputButton" type="button" value="목록보기"
-					onclick="window.location='board_list.do?kind=${dto.KIND}'">
+					onclick="window.location='board_list.do?kind=${kind}&pageNum=${pageNum}'">
 			</td>
 		</tr>
 		
