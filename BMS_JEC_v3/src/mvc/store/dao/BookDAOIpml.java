@@ -364,8 +364,8 @@ public class BookDAOIpml implements BookDAO {
 	}
 
 	// searchCnt : 검색 량
-		@Override
-		public int searchCnt(String str) {
+	@Override
+	public int searchCnt(String str) {
 			
 			System.out.println("    : searchCnt() 매소드 실행");
 			System.out.println("    : str 값 : " +str);
@@ -405,9 +405,10 @@ public class BookDAOIpml implements BookDAO {
 	
 	// search() : 도서 검색
 	@Override
-	public ArrayList<BookDTO> booksearch(String str) {
+	public ArrayList<BookDTO> booksearch(String str, int start, int end) {
 
 		System.out.println("    : booksearch() 매소드 실행");
+		
 		ArrayList<BookDTO> dtos = null;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -416,9 +417,20 @@ public class BookDAOIpml implements BookDAO {
 		try{
 			conn = data.getConnection();
 			
-			String sql = "SELECT * FROM BOOK WHERE title like '%"+str+"%'"; 
+			String sql = "SELECT * " + 
+							"FROM ( SELECT B_NUM, TITLE, SUBTITLE, AUTHOR, QUAN, " + 
+							"PRICE, REG_DATE, KIND, STATE, rowNum rNum " + 
+						"FROM ( SELECT * FROM BOOK " +
+							" WHERE TITLE LIKE '%"+str+"%' " + 
+							" ORDER BY B_NUM " +
+							 	") " +
+							") " +
+						"WHERE rNum >= ? AND rNum <= ? ";
 			
 				pstmt=conn.prepareStatement(sql);
+				
+				pstmt.setInt(1, start);
+				pstmt.setInt(2, end);
 				rs = pstmt.executeQuery();
 				
 				if(rs.next()){
@@ -460,5 +472,251 @@ public class BookDAOIpml implements BookDAO {
 	}
 
 	
+	// 도서 상태 변경
+	@Override
+	public int bookstate( BookDTO dto) {
+		
+		System.out.println("    : bookstate() 매소드 실행");
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int cnt = 0;
+		int in_cont=0;
+		
+		try{
+			
+			conn = data.getConnection();
+			
+			// 우선 재고 파악 부터
+			
+			String sql="SELECT QUAN FROM BOOK WHERE B_NUM=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dto.getB_num());
+			rs = pstmt.executeQuery();
 	
+
+			if( rs.next() ){
+				
+				if( rs.getInt("QUAN") >= dto.getQuan() ){
+					
+					// 주문 수량 만큼 재고 삭제
+					sql = null;
+					sql="UPDATE BOOK SET QUAN=(QUAN-?) WHERE B_NUM=?";
+					
+					pstmt.close();
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setInt(1, dto.getQuan() );
+					pstmt.setInt(2, dto.getB_num() );
+					rs.close();
+					rs = pstmt.executeQuery();
+					
+					if(rs.next()){
+						cnt = 1;	// 주문 수량 삭제 완료
+					} else {
+						cnt = 2;	// 삭제 중 오류
+					}
+				} else {
+					cnt = 3;	// 재고수량이 주문수량보다 적음
+				}
+				
+			} else {	
+				cnt = 0 ;	// 재고 없음  
+			} //  rs.next() 	
+			
+			
+			
+			
+			if (cnt==1){
+				
+				// 주문 수량 만큼 도서 상태를 변경후 추가
+				sql = null;
+				sql="INSERT INTO CART ( B_NUM, M_NUM, ORDERNUM, PRICE, REG_DATE, STATE )" + 
+					" VALUES (?,?,?,?,?,?)";
+					
+				pstmt.close();
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setInt		(1, dto.getB_num()		);
+				pstmt.setInt		(2, dto.getM_num()		);
+				pstmt.setInt		(3, dto.getQuan()		);
+				pstmt.setInt		(4, dto.getPrice()		);
+				pstmt.setTimestamp	(5, dto.getReg_date()	);
+				pstmt.setString		(6, dto.getState()		);	
+					
+				in_cont = pstmt.executeUpdate();
+				
+				
+				if(in_cont == 1){
+					System.out.println("    : 등록완료");
+				}else{
+					System.out.println("    : 오류 발생");
+					cnt=4;
+				} 
+			}
+				
+		
+			/*
+			sql = null;
+			sql="INSERT INTO BOOK ( B_NUM, M_NUM, TITLE, SUBTITLE, " +
+					"AUTHOR, QUAN, PRICE, REG_DATE, KIND, STATE )" + 
+					" VALUES (?,?,?,?,?,?,?,?,?,?)";
+				 
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setInt		(1, dto.getB_num()		);
+				pstmt.setInt		(2, dto.getM_num()		);
+				pstmt.setString		(3, dto.getTitle()		);
+				pstmt.setString		(4, dto.getSubtitle()	);
+				pstmt.setString		(5, dto.getAuthor()		);
+				pstmt.setInt		(6, dto.getQuan()		);
+				pstmt.setInt		(7, dto.getPrice()		);
+				pstmt.setTimestamp	(8, dto.getReg_date()	);
+				pstmt.setString		(9, dto.getKind()		);
+				pstmt.setString		(10, dto.getState()		);
+				
+				cnt = pstmt.executeUpdate();
+			*/
+			
+			
+			/*System.out.println("    : cnt값 : " + cnt);*/
+			
+		} catch( SQLException e1 ){ e1.printStackTrace(); 
+		} finally {
+			
+			try{
+				if( conn != null ) conn.close();
+				if( pstmt != null ) pstmt.close();
+				if( rs != null ) rs.close();
+			} catch(  SQLException e2 )
+				{ e2.printStackTrace(); }
+			
+		}
+		
+		return cnt;
+	}
+
+	
+	// 카트테이블 목록 불러오기
+	@Override
+	public ArrayList<BookDTO> getcart(int start, int end) {
+		
+		System.out.println("    : getcart(start, end) 매소드 실행");
+		System.out.println("    : start : " + start) ;
+		System.out.println("    : end : " + end);
+		
+		ArrayList<BookDTO> carts = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try{
+			conn = data.getConnection();
+			
+			String sql = 
+				"SELECT C.B_NUM, B.TITLE, C.M_NUM, M.ID , C.ORDERNUM , C.PRICE , " +
+				"C.REG_DATE , C.STATE , rowNum " +
+				"FROM CART C INNER JOIN MEMBER M " +
+				"ON C.M_NUM = M.M_NUM INNER JOIN BOOK B "+
+				"ON C.B_NUM = B.B_NUM "+
+				"WHERE rowNum >= ? AND rowNum <= ? "; 
+			
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setInt(1, start);
+				pstmt.setInt(2, end);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()){
+					carts = new ArrayList<>(end-start+1);
+					
+					do{
+						BookDTO dto = new BookDTO();
+						
+						/*----------------------------------------------------------*/
+						/*
+						System.out.println( rs.getInt("B_NUM") );
+						System.out.println( rs.getString("TITLE") );
+						System.out.println( rs.getInt("M_NUM") );
+						System.out.println( rs.getString("ID") );
+						*/
+						/*----------------------------------------------------------*/
+						
+						
+						dto.setB_num(rs.getInt("B_NUM"));			// 도서번호
+						dto.setTitle(rs.getString("TITLE")); 		// 도서제목
+						dto.setM_num(rs.getInt("M_NUM"));			// 회원번호
+						dto.setId(rs.getString("ID")); 			// 회원ID
+						dto.setOrdernum(rs.getInt("ORDERNUM"));	// 주문수량	
+						dto.setPrice(rs.getInt("PRICE"));			// 도서 가격
+						dto.setReg_date(rs.getTimestamp("REG_DATE"));// 등록일
+						dto.setState(rs.getString("STATE"));		// 도서상태
+						
+						
+						carts.add(dto);
+					
+				}while(rs.next());
+				System.out.println("    : 데이터 로딩 성공");
+			} else {
+				System.out.println("    : 데이터 로딩 중 오류 발생");
+			}
+			
+				sql = "SELECT * FROM CART";
+				pstmt.close();
+				pstmt=conn.prepareStatement(sql);
+				rs.close();
+				rs = pstmt.executeQuery();
+				
+				if (rs.next()){
+					System.out.println("값이 들어갔음");
+				}else {
+					System.out.println("값이 업음");
+				}
+			
+		} catch ( SQLException e) { e.printStackTrace();
+			
+		} finally {
+			try{
+				if( conn != null ) conn.close();
+				if( pstmt != null ) pstmt.close();
+				if( rs != null ) rs.close();
+			} catch( SQLException e) { e.printStackTrace(); }
+		}
+
+		return carts;
+	}
+	
+	// 카트 목록 가져오기
+	public int getCount_cart(){
+		System.out.println("    : getCount_cart() 매소드 실행");
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int cnt = 0;
+		
+		try{
+			conn = data.getConnection();
+			String sql = "SELECT COUNT(*) FROM CART WHERE STATE='CART'";
+			pstmt=conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) cnt=rs.getInt("COUNT(*)");
+			System.out.println("    :  목록 cnt값 : " + cnt + "개");
+			
+		} catch ( SQLException e) { e.printStackTrace();
+			
+		} finally {
+			try{
+				if( conn != null ) conn.close();
+				if( pstmt != null ) pstmt.close();
+				if( rs != null ) rs.close();
+			} catch( SQLException e) { e.printStackTrace(); }
+		}
+
+		return cnt;
+	}
+	
+
+	
+
 }

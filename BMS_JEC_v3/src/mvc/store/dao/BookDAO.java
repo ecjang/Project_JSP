@@ -7,7 +7,7 @@ import mvc.store.dto.BookDTO;
 
 public interface BookDAO {
 	
-	static final int SALEABLE 			= 1;
+	static final int SALE				= 1;
 	static final int CART 				= 2;
 	static final int ORDER 				= 3;
 	static final int PAY_WAITING 		= 4;
@@ -26,7 +26,13 @@ public interface BookDAO {
 	public int book_insert(BookDTO dto);
 	public int delete(int num);
 	
-	public ArrayList<BookDTO> booksearch(String str);
+	public ArrayList<BookDTO> booksearch(String str, int start, int end );
 	public int searchCnt(String str);
+	
+	/*------------------------------------*/
+	
+	public int bookstate( BookDTO dto);
+	public ArrayList<BookDTO> getcart(int start , int end);
+	public int getCount_cart();
 	
 }

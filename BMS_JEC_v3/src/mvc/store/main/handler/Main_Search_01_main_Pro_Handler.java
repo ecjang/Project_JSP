@@ -15,9 +15,9 @@ import mvc.store.dto.BookDTO;
 public class Main_Search_01_main_Pro_Handler implements Command_Handler   {
 
 	@Override
-	public String mainexecute(HttpServletRequest req, HttpServletResponse res , String str ) {
+	public String mainexecute(HttpServletRequest req, HttpServletResponse res ) {
 		
-		System.out.println("  -> Main_Serch_01_Pro_Handler ");
+		System.out.println("  -> Main_Search_01_main_Pro_Handler ");
 		
 		int pageSize = 5, pageBlock = 5;	// 한페이지 글 개수 / 페이지 개수
 		int cnt=0, start=0, end=0, number=0; 
@@ -30,7 +30,7 @@ public class Main_Search_01_main_Pro_Handler implements Command_Handler   {
 		/*-----------------------------------------------------*/
 		
 		BookDAO dao = BookDAOIpml.getInstance();
-		str = req.getParameter("str"); 
+		String str = req.getParameter("str"); 
 		cnt = dao.searchCnt(str);
 		
 		
@@ -74,7 +74,7 @@ public class Main_Search_01_main_Pro_Handler implements Command_Handler   {
 			ArrayList<BookDTO> dtos = new ArrayList<>();
 			
 			
-			dtos = dao.booksearch(str);
+			dtos = dao.booksearch(str,start,end);			// 검색어로 북 리스트 추출
 			
 			
 			req.setAttribute("dtos", dtos);					// 큰 바구니 속성 설정

@@ -18,24 +18,24 @@ public class Login_Pro_Handler implements Command_Handler  {
 		MemberDAO dao = MemberDAOImpl.getInsatance();
 		
 		int memkind = dao.kind(strid);
-		req.getSession().setAttribute("memkind", memkind);	
-		System.out.println("  -> memkind 技记蔼 : " + memkind);
-		
-		
 		int m_num = dao.m_num(strid);
 		
+		req.getSession().setAttribute("memkind", memkind);	
 		req.getSession().setAttribute("m_num", m_num);	
-		/*System.out.println("  -> m_num 技记蔼 : " + req.getSession().getAttribute("m_num") );*/
+		
+		System.out.println("  -> memkind 技记蔼 : " + memkind);
+		System.out.println("  -> m_num 技记蔼 : " + m_num);
 		
 		
 		int cnt = dao.check(strid,strpwd);
 		if(cnt==1){
 			req.getSession().setAttribute("memId", strid);	
+			System.out.println("  -> memId 技记蔼 : " + strid);
 		} 
 		
 		req.setAttribute("cnt", cnt);
 		
-		/*return "Index.jsp";*/
+		
 		return "/_Store/View/Login/01_Login_Main.jsp";
 	}
 

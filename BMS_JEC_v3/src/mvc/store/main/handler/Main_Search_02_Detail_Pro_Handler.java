@@ -10,22 +10,20 @@ import mvc.store.dto.BookDTO;
 public class Main_Search_02_Detail_Pro_Handler implements Command_Handler {
 
 	@Override
-	public String mainexecute(HttpServletRequest req, HttpServletResponse res, String str) {
+	public String mainexecute(HttpServletRequest req, HttpServletResponse res) {
 
 		System.out.println("  -> Main_Search_02_Detail_Pro_Handler ");
 		
-		
-		int b_num = Integer.parseInt( req.getParameter("b_num") );
-		int pageNum = Integer.parseInt( req.getParameter("pageNum") );
-		int start = Integer.parseInt( req.getParameter("start") );
-		
-		
-		System.out.println(" - b_num : " + b_num);
-		System.out.println(" - pageNum : " + pageNum);
-		System.out.println(" - start : " + start);
-		System.out.println(" - str : " + str);
-		
-		
+		int b_num = Integer.parseInt( 	req.getParameter("b_num") );	// 도서 조회용 책 코드 번호
+		int pageNum = Integer.parseInt( req.getParameter("pageNum") );	// 검색페이지 페이지 번호
+		int start = Integer.parseInt( 	req.getParameter("start") );	// 검색페이지 순서 번호
+		String str = req.getParameter("str");							// 검색페이지 검색어
+		/*
+		System.out.println("  - b_num : " + b_num);
+		System.out.println("  - pageNum : " + pageNum);
+		System.out.println("  - start : " + start);
+		System.out.println("  - str : " + str);
+		*/
 		BookDTO dto = new BookDTO();
 		BookDAO dao = new BookDAOIpml().getInstance();
 		dto = dao.getArticles(b_num);
@@ -35,13 +33,6 @@ public class Main_Search_02_Detail_Pro_Handler implements Command_Handler {
 		req.setAttribute("start", start);
 		req.setAttribute("pageNum", pageNum);
 		req.setAttribute("str", str);
-		
-		
-		/*
-		System.out.println("  -> b_num의 값 " + b_num);
-		System.out.println("  -> number의 값 " + number);
-		System.out.println("  -> pageNum의 값 " + pageNum);
-		*/
 		
 		return "/_Store/View/Main/02_Serch_Detail.jsp";	
 	}

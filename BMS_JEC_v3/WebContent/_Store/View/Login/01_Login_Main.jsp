@@ -1,23 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
-<c:if test="${headCheck==0}">
-	<%@ include file="../../Asset/PreSetting.jsp" %>
-</c:if>
+<%@ include file="../../Asset/PreSetting.jsp" %>
 
 <!DOCTYPE html><html>
 <body onload="mainFocus()">
 
 	<% System.out.println("  -> 로그인 메인 : 01_Login_Main.jsp "); %>
-	<h3> 로그인 메인 페이지 </h3>
+	<h3><center> 로그인 메인 페이지 </center> </h3>
 	
 	<c:set var="cnt" 	value="${requestScope.cnt}"/>
-	<c:set var="memId" 	value="${sessionScope.memId}"/> 
+	
+	<%-- <c:set var="memId" 	value="${sessionScope.memId}"/>  --%>
 
 	<c:if test="${sessionScope.memId == null}">
 	
 		<!-- 로그인 양식  -->
 		<form action="loginPro.do" method="post" name="mainform" onsubmit="return mainCheck();">
-			<table>
+			<table align="center" >
 			
 			<tr><th colspan="2">
 			
@@ -45,7 +43,7 @@
 
 	<c:if test="${sessionScope.memId != null}">
 	
-		<table>
+		<table align="center" >
 			<tr><td align="center" style="width:300px;"> <span>${sessionScope.memId}</span>님 안녕하세요. </td>
 			<tr><th><input class="inputButton" type="button" value="정보수정" onclick="window.location='modifyForm.do'">
 			<tr><th><input class="inputButton" type="button" value="회원탈퇴" onclick="window.location='deleteForm.do'">

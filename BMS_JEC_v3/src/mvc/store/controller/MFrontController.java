@@ -93,9 +93,12 @@ public class MFrontController extends HttpServlet {
 		} else if ( url.contains("/header_m5.do") ){
 			System.out.println("메뉴5. 칸5 으로 이동  ");
 			viewPage = "/_Store/View/Main.jsp"; 
-		} 
 		
+		} else if ( url.contains("/main.do") ){
+			System.out.println("메인으로 이동  ");
+			viewPage = "/_Store/View/Main/01_Serch_Main.jsp"; 
 		
+		}
 		
 		
 		/* 회원 가입   -----------------------------------------------------*/
@@ -295,16 +298,14 @@ public class MFrontController extends HttpServlet {
 		// 도서 제목 검색
 		if (url.contains("/search_list.do")){
 			System.out.println("도서 제목 검색" );
-			String str = req.getParameter("str");
 			Main_Search_01_main_Pro_Handler handler = new Main_Search_01_main_Pro_Handler();
-			viewPage = handler.mainexecute(req, res, str);
+			viewPage = handler.mainexecute(req, res);
 		
 		// 검색도서 상세페이지	
 		} else if (url.contains("/search_detail.do")){
 			System.out.println("도서 검색 상세페이지" );
-			String str = req.getParameter("str");
 			Main_Search_02_Detail_Pro_Handler handler = new Main_Search_02_Detail_Pro_Handler();
-			viewPage = handler.mainexecute(req, res , str);			
+			viewPage = handler.mainexecute(req, res);			
 			
 		}
 		
@@ -315,12 +316,8 @@ public class MFrontController extends HttpServlet {
 		
 		if (url.contains("/guest_cart.do")){
 			System.out.println("장바구니로 이동" );
-			int b_num = 	Integer.parseInt( req.getParameter("b_num") 	);
-			int pageNum = 	Integer.parseInt( req.getParameter("pageNum")	);
-			int ordernum = 	Integer.parseInt( req.getParameter("ordernum")	);
-			String state = 	req.getParameter("state");
 			Guest_Cart_01_Pro_Handler handler = new Guest_Cart_01_Pro_Handler();
-			viewPage = handler.orderexecute(req, res, b_num, pageNum, ordernum, state);
+			viewPage = handler.orderexecute(req, res);
 			
 			
 			

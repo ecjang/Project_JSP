@@ -13,6 +13,7 @@ public class Logout_Pro_Handler implements Command_Handler  {
 		req.getSession().setAttribute("memId", null);
 		req.setAttribute("cnt", 2);	
 		
+		
 		return "/_Store/View/Login/01_Login_Main.jsp";
 	}
 

@@ -3,18 +3,22 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<!-- 메인은 아이프레임으로 불러오기 때문에 헤더가 없음 -->
 
 <!DOCTYPE html><html>
 <body onload="search_focus();">
 	
+	<% System.out.println("  -> 01_Serch_Main "); %>
+	<h3> <center> 검색페이지 </center> </h3>
+	
+	<!-- -------------------------------------------------------- -->
+	<!-- css & js 설정 -->
+	<!-- -------------------------------------------------------- -->
+	
 	<c:set var="jec" value="/BMS_JEC_v3/_Store/Asset/"/>
 	<script type="text/javascript" src="${jec}jquery-1.11.3.js"></script>
 	<script type="text/javascript" src="${jec}js.js"></script>
-	<link type="text/css" rel="stylesheet" href="${jec}css.css">
-
 	
-	<% System.out.println("  -> 01_Serch_Main.jsp "); %>
-	<h3> <center> 검색페이지 </center> </h3>
 	
 	<!-- -------------------------------------------------------- -->
 	<!-- 검색바 -->
@@ -27,6 +31,7 @@
 				<td> 
 
 					<input type="text" value="수학"  <%-- "${str}" --%> name="str" style="width:50%";  > 
+					&ensp;
 					<input type="submit" value="검색" >
 				</td>
 			</tr>
@@ -68,8 +73,13 @@
 				
 				<td align="left" style="margin-left: 20px;"> 
 				
-		
-					<a href="search_detail.do?b_num=${d.b_num}&pageNum=${pageNum}&start=${start}&str=${str}"" 
+					<!-- ---------------------------------------------------------- -->
+					<!--    세부 정보 페이지 이동     -->
+					<!--    b_num , pageNum , start , str 넘김     -->
+					<!-- ---------------------------------------------------------- -->
+					
+					
+					<a href="search_detail.do?b_num=${d.b_num}&pageNum=${pageNum}&start=${start}&str=${str}" 
 						onclick="window.open(this.href, 'deail' ,'eft=10,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes');
 					return false;">  ${d.title}  </a>
 						 
@@ -91,7 +101,7 @@
 					
 					<c:if test="${startPage > pageBlock}">	
 						<a href="search_list.do?str=${str}"> [◀◀] </a>	
-						<a href="search_list.do?pageNum=${startPage-pageBlock}&str=${str}"> [◀] </a>	
+						<a href="search_list.do?str=${str}&pageNum=${startPage-pageBlock}"> [◀] </a>	
 					</c:if>
 					
 					<c:forEach var="i" begin="${startPage}" end="${endPage}">
@@ -100,14 +110,14 @@
 							<span><b> [${i}] </b></span>
 						</c:if>
 						<c:if test="${i != currentPage}">
-							<a href="search_list.do?pageNum=${i}&str=${str}">[${i}]</a>	
+							<a href="search_list.do?str=${str}&pageNum=${i}">[${i}]</a>	
 						</c:if>
 						
 					</c:forEach>
 					
 					<c:if test="${pageCount > endPage}">
-						<a href="search_list.do?pageNum=${startPage + pageBlock}&str=${str}"> [▶] </a>	
-						<a href="search_list.do?pageNum=${pageCount}&str=${str}"> [▶▶]</a>		
+						<a href="search_list.do?str=${str}&pageNum=${startPage + pageBlock}"> [▶] </a>	
+						<a href="search_list.do?str=${str}&pageNum=${pageCount}"> [▶▶]</a>		
 					</c:if>
 				
 				</th>
