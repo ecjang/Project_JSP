@@ -1,14 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%@ include file="../../Asset/PreSetting.jsp" %>
+
 
 <!DOCTYPE html><html>
 <body onload="mainFocus()">
 
+	
+	
 	<% System.out.println("  -> 로그인 메인 : 01_Login_Main.jsp "); %>
 	<h3><center> 로그인 메인 페이지 </center> </h3>
 	
+	<%-- 
+	<% int b_num = (Integer)request.getAttribute("b_num"); 
+	System.out.println("  -> b_num 값 : " + b_num );  %> 
+	 --%>
+	 <%-- 
 	<c:set var="cnt" 	value="${requestScope.cnt}"/>
-	
+	 --%>
 	<%-- <c:set var="memId" 	value="${sessionScope.memId}"/>  --%>
 
 	<c:if test="${sessionScope.memId == null}">
@@ -17,14 +27,16 @@
 		<form action="loginPro.do" method="post" name="mainform" onsubmit="return mainCheck();">
 			<table align="center" >
 			
+			<input type="hidden" name="b_num" value="${param.b_num}"/>
+			
 			<tr><th colspan="2">
 			
 			<c:choose>
-				<c:when test="${cnt==-1}"> 	비밀번호가 다릅니다. 다시확인하세요. </c:when>
-				<c:when test="${cnt==0}"> 	존재하지 않는 아이디 입니다.다시 확인하세요. </c:when>
-				<c:when test="${cnt==1}"> 	회원가입을 축하합니다. 다시 로그인 하세요. </c:when>
-				<c:when test="${cnt==2}"> 	환영합니다. </c:when>
-				<c:when test="${cnt==3}"> 	해당 서비스를 이요하시려면 로그인 해주세요. </c:when>
+				<c:when test="${param.cnt==-1}"> 	비밀번호가 다릅니다. 다시확인하세요. </c:when>
+				<c:when test="${param.cnt==0}"> 	존재하지 않는 아이디 입니다.다시 확인하세요. </c:when>
+				<c:when test="${param.cnt==1}"> 	회원가입을 축하합니다. 다시 로그인 하세요. </c:when>
+				<c:when test="${param.cnt==2}"> 	환영합니다. </c:when>
+				<c:when test="${param.cnt==3}"> 	해당 서비스를 이용하시려면 로그인 해주세요. </c:when>
 				<c:otherwise> 환영합니다. </c:otherwise>
 			</c:choose>
 			 
@@ -48,9 +60,12 @@
 			<tr><th><input class="inputButton" type="button" value="정보수정" onclick="window.location='modifyForm.do'">
 			<tr><th><input class="inputButton" type="button" value="회원탈퇴" onclick="window.location='deleteForm.do'">
 			<tr><th><input class="inputButton" type="button" value="로그아웃" onclick="window.location='logout.do'">
+			<tr><th><input class="inputButton" type="button" value="장바구니" onclick="window.location='guest_cart_pro.do'">
+			<tr><th><input class="inputButton" type="button" value="주문목록" onclick="window.location='guest_order.do'">
+			
 		</table>
 	
 	</c:if>
-
+	
 </body>
 </html>

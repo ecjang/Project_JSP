@@ -56,6 +56,17 @@
 		</tr>
 		
 		<tr>
+			<th> 분류 : </th>
+			<td colspan="3">
+				<input type="radio" value="NOTICE" name="kind" checked > 공지사항
+				<input type="radio" value="QnA" name="kind"> 질의응답
+				<input type="radio" value="FAQ" name="kind"> 자주하는 질문
+				<input type="radio" value="EVENT" name="kind"> 이벤트
+			</td>
+		</tr>
+		
+		
+		<tr>
 			<th> 세부정보 </th>
 			<td> 
 				
@@ -63,6 +74,7 @@
 				
 			</td>
 		</tr>
+		
 		
 				
 		<tr>

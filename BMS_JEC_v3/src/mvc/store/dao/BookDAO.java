@@ -10,13 +10,12 @@ public interface BookDAO {
 	static final int SALE				= 1;
 	static final int CART 				= 2;
 	static final int ORDER 				= 3;
-	static final int PAY_WAITING 		= 4;
-	static final int PAY_COMPPLETE 		= 5;
-	static final int SHIPPING_READY 	= 6;
-	static final int SHIPPING 			= 7;
-	static final int SHIPPING_COMPLETE 	= 8;
-	static final int RETURN_REQUEST 	= 9;
-	static final int RETURN_COMPLETE 	= 10;
+	static final int ORDER_COMPLETE 	= 4;
+	static final int ORDER_CANCLE 		= 5;
+	static final int PAY_COMPLETE 		= 6;
+	static final int PAY_CANCLE 		= 7;
+	
+	
 	
 	public int getCount();
 	public ArrayList<BookDTO> getArticles(int start , int end);
@@ -34,5 +33,19 @@ public interface BookDAO {
 	public int bookstate( BookDTO dto);
 	public ArrayList<BookDTO> getcart(int start , int end);
 	public int getCount_cart();
+	public int cart_ordernum( int c_num , int ordernum );
+	public int cart_orderdel(int c_num);
+	public int cart_orderconfirm( int c_num , int ordernum );
+	public int cart_quan(int b_num);
+	public BookDTO cart_input(int c_num , int ordernum);
+	public int cart_output(BookDTO dto);
+	public ArrayList<BookDTO> cart_getcart(int id);
+	public int cart_moveorder(ArrayList<BookDTO> dtos);
+	public int cart_afterdel(int m_num);
+	
+	public ArrayList<BookDTO> getorder(int start, int end);
+	public int getOrderCount();
+	public int changeState(int o_num, String state);
+	public int sum();
 	
 }

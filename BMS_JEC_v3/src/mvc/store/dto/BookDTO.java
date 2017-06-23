@@ -5,8 +5,10 @@ import java.sql.Timestamp;
 public class BookDTO {
 	
 	// 변수 설정
+	private int c_num;
 	private int b_num;
 	private int m_num;
+	private int o_num;
 	private String title;
 	private String subtitle;
 	private String author;
@@ -20,6 +22,21 @@ public class BookDTO {
 	
 	
 	
+	
+	public int getO_num() {
+		return o_num;
+	}
+	public void setO_num(int o_num) {
+		this.o_num = o_num;
+	}
+	
+	
+	public int getC_num() {
+		return c_num;
+	}
+	public void setC_num(int c_num) {
+		this.c_num = c_num;
+	}
 	
 	public String getId() {
 		return id;

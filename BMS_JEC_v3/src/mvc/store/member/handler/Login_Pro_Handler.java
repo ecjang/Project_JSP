@@ -12,6 +12,13 @@ public class Login_Pro_Handler implements Command_Handler  {
 	public String process(HttpServletRequest req, HttpServletResponse res) {
 		System.out.println("  -> 본인확인 : Login_Pro_Handler");
 		
+		// 만일 b_num 값을 받으면 메인으로 이동.
+		String b_num = (String) req.getAttribute("b_num");
+		if( b_num != null ){
+			return "/_Store/Main.jsp";
+		}
+		
+		
 		String strid = req.getParameter("id");
 		String strpwd = req.getParameter("passwd");
 		
@@ -34,7 +41,7 @@ public class Login_Pro_Handler implements Command_Handler  {
 		} 
 		
 		req.setAttribute("cnt", cnt);
-		
+		req.setAttribute("b_num", 0);
 		
 		return "/_Store/View/Login/01_Login_Main.jsp";
 	}

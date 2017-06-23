@@ -25,9 +25,13 @@
 				</c:when>
 				
 				<c:when test="${memkind==1}">
-					<a href="write.do"> 도서추가 </a> &emsp;
-					<a href="write.do"> 도서수정 </a> &emsp;
-					<a href="write.do"> 도서삭제 </a>
+					<a href="admin_write.do"> 도서추가 </a> &emsp;
+					
+					<!-- 
+					<a href="admin_modify.do"> 도서수정 </a> &emsp;
+					<a href="admin_delete.do"> 도서삭제 </a>
+					 -->
+					
 				</c:when>
 			</c:choose>
 			

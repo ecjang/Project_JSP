@@ -28,7 +28,7 @@
 			
 			<tr>
 				<th> 제목 : </th>
-				<td> <input value="수정한제목 ${n}" type="text" name="b_title" 
+				<td> <input value="${dto.title} " type="text" name="b_title" 
 					class="input" maxlength="30">
 				</td>
 			</tr>
@@ -37,27 +37,27 @@
 				<th> 부제 : </th>
 				<td> 
 				<textarea name="b_subtitle" class="input" cols="40" 
-					rows="10"> 수정한 부제목 ${n} </textarea>
+					rows="10"> ${dto.subtitle} </textarea>
 				</td>
 			</tr>
 			
 			<tr>
 				<th> 저자 : </th>
-				<td> <input value="수정한 저자 ${n}" type="text" name="b_author" 
+				<td> <input value="${dto.author}" type="text" name="b_author" 
 					class="input" maxlength="30">
 				</td>
 			</tr>
 			
 			<tr>
 				<th> 가격 : </th>
-				<td> <input value="${n}${n}" name="b_price" type="text" 
+				<td> <input value="${dto.price}" name="b_price" type="text" 
 					class="input" maxlength="30" >
 				</td>
 			</tr>
 	
 			<tr>
 				<th> 수량 : </th>
-				<td> <input value="${n}" name="b_quan" type="text" 
+				<td> <input value="${dto.quan}" name="b_quan" type="text" 
 					class="input" maxlength="30" > </td>
 			</tr>
 			
@@ -68,7 +68,7 @@
 			
 			<tr>
 				<th> 종류 : </th>
-				<td> <input value="수정한 종류 ${n}" name="b_kind" type="text" 
+				<td> <input value="${dto.kind}" name="b_kind" type="text" 
 					class="input" maxlength="30" > </td>
 			</tr>
 			

@@ -12,15 +12,16 @@ var msg_email		= "이메일을 입력하세요."			;
 var msg_emailChk	= "이메일 형식에 맞지 않습니다."		;
 var msg_confirmid	= "중복확인을 해주세요."			;
 var msg_writer 		= "작성자를 입력하세요." 			;
-var msg_subject 	= "제목를 입력하세요."				;
-var msg_content 	= "내용을 입력하세요."				;
-var msg_title 		= "제목을 입력하세요."				;
-var msg_subtitle 	= "부제를 입력하세요."				;
-var msg_price 		= "가격를 입력하세요."				;
+var msg_subject 	= "제목를 입력하세요."			;
+var msg_content 	= "내용을 입력하세요."			;
+var msg_title 		= "제목을 입력하세요."			;
+var msg_subtitle 	= "부제를 입력하세요."			;
+var msg_price 		= "가격를 입력하세요."			;
 var msg_quan 		= "재고량을 입력하세요."			;
-var msg_author		= "저자를 입력하세요."				;
+var msg_author		= "저자를 입력하세요."			;
 var msg_kind		= "책 종류를 입력하세요."			;
 var msg_author		= "저자를 입력해주세요."			;
+var msg_str			= "검색어를 입력해주세요."			;
 
 	
 var insertError = "회원가입에 실패했습니다. \n 잠시후 다시 시도해주세요.";
@@ -325,19 +326,131 @@ function board_writeCheck(){
 
 /*-----------------------------------------------------*/
 
-// 메인 세부보기에서 장바구니 버튼 클릭
+
+
+//게시물 수정 
+function board_modifyFocus(){
+	if (!document.modifyform.title.value){
+		document.modifyform.title.focus();
+	};
+}
+
+function board_modifyCheck(){
+	if( !document.modifyform.title.value ){
+		alert(msg_title);
+		document.modifyform.title.focus();
+		return false;
+		
+	} else if ( !document.modifyform.content.value  ){
+		alert(msg_content);
+		document.modifyform.content.focus();
+		return false;
+	}
+
+}
+
+
+
+/*-----------------------------------------------------*/
+
+
+
+//검색페이지
+function search_focus(){
+	if (!document.searchform.str.value){
+		document.searchform.str.focus();
+	};
+}
+
+function board_modifyCheck(){
+	if( !document.searchform.str.value){
+		alert(msg_str);
+		document.searchform.str.focus();
+		return false;
+		
+	}
+
+}
+
+
+
+/*-----------------------------------------------------*/
+
+// 검색페이지
+
+function cart_modify(price,ordernum,ordernum2){
+	
+	var price 		= parseInt(price) ;
+	var ordernum2	= parseInt(ordernum2);
+	
+	var sum	= price*ordernum2
+	
+	console.log(sum);
+	
+	/*
+	var table = document.getElementById("guestcartform");
+	var pay = document.getElementById("pay").html;
+	var pay2 = $("#pay").html();
+	
+	
+	console.log(table);
+	console.log(pay);
+	console.log(pay2);
+	 */
+}
+
+
+
+/*-----------------------------------------------------*/
+
+//장바구니 수량 수정된 값 넘기기
+
+function ordernum( c_num , order , b_num ){
+	
+	
+	var ordernum = document.getElementById(order).value;
+	
+	console.log("order : " + order);
+	console.log("ordernum : " +ordernum);
+	console.log("b_num : " + b_num);
+	
+	/*
+	var doc = document.guestcartform_list;
+	var or = order;
+	var va = value;
+	var odernum = doc.order.va;
+	*/
+	/*
+	alert(c_num);
+	alert(odernum);
+	*/
+	
+	console.log("guest_cart_ordernum_pro.do?c_num="+c_num+"&ordernum="+ordernum+"&b_num="+b_num);
+	window.location="guest_cart_ordernum_pro.do?c_num="+c_num+"&ordernum="+ordernum+"&b_num="+b_num;
+	
+	/*window.location="guest_cart_ordernum_pro.do?ordernum="+ordernum;*/
+	
+}
 
 
 
 
 
+//장바구니 선택 한 거 주문으로 넘기기
+function orderconfirm( c_num, order){
+	alert("orderconfirm에 들어왔다");
+	/*console.log("orderconfirm에 들어왔다");*/
+	var ordernum = document.getElementById(order).value;
+	window.location="guest_cart_orderconfirm_pro.do?c_num="+c_num+"&ordernum="+ordernum;
+	
+}
 
 
-
-
-
-
-
+//장바구니 수량 수정된 값 넘기기
+function orderdel( c_num  ){
+	/*alert(c_num);*/
+	window.location="guest_cart_orderdel_pro.do?c_num="+c_num;
+}
 
 
 

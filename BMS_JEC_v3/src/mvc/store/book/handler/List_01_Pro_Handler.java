@@ -66,9 +66,11 @@ public class List_01_Pro_Handler implements Command_Handler {
 			
 			int n = cnt+1;
 			req.setAttribute("n", n);
+			req.setAttribute("b_num", 0);
 			
 		} else {
 			System.out.println("  -> 등록된 서적이 없습니다.");
+			
 		}
 		
 		return "/_Store/View/Book/02_Book_List_Table.jsp"; 

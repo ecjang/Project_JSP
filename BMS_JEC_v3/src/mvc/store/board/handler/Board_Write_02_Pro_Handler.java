@@ -37,7 +37,7 @@ public class Board_Write_02_Pro_Handler implements Command_Handler {
 			dto.setREF_STEP( Integer.parseInt( req.getParameter("ref_step")) );
 			dto.setREF_LEVEL( Integer.parseInt( req.getParameter("ref_level")) );
 			dto.setREG_DATE( new Timestamp(System.currentTimeMillis()) );
-			dto.setKIND( kind );
+			dto.setKIND( req.getParameter("kind") );
 			dto.setIP(ip);
 			
 			/*

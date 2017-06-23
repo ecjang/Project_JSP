@@ -2,8 +2,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../../Asset/PreSetting.jsp" %>
 
+
+
 <!DOCTYPE html><html>
 <body>
+
+	<% String str = (String) request.getSession().getAttribute("str");
+		System.out.println("헤드 테스트 : "+str);
+	%>
 
 	<% System.out.println("  -> 도서 세부정보  : 03_Book_List_Detail.jsp "); %>
 	<h3> <center> 도서 세부정보 페이지 </center> </h3>
@@ -46,18 +52,24 @@
 		<tr>
 			<td colspan="4">
 				
-				<input class="inputButton" type="button" value="신간 도서 추가" 
-					onclick="window.location='book_write.do?b_num=${dto.b_num}&pageNum=${pageNum}'">
-
-				<input class="inputButton" type="button" value="도서 정보 수정"
-					onclick="window.location='book_modify_from.do?b_num=${dto.b_num}&pageNum=${pageNum}'">
-				
-				<input class="inputButton" type="button" value="도서 정보 삭제" 
-					onclick="window.location='book_delete_pro.do?b_num=${dto.b_num}&pageNum=${pageNum}'">
-				
-				<input class="inputButton" type="button" value="도서 목록으로"
-					onclick="window.location='book_list.do?pageNum=${pageNum}'">
+				<c:if test="${memId=='id5'}">
+				<%-- 
+					<input class="inputButton" type="button" value="신간 도서 추가" 
+						onclick="window.location='book_write.do?b_num=${dto.b_num}&pageNum=${pageNum}'">
+	 --%>
+					<input class="inputButton" type="button" value="도서 정보 수정"
+						onclick="window.location='book_modify_from.do?b_num=${dto.b_num}&pageNum=${pageNum}'">
+					
+					<input class="inputButton" type="button" value="도서 정보 삭제" 
+						onclick="window.location='book_delete_pro.do?b_num=${dto.b_num}&pageNum=${pageNum}'">
+					
+					<input class="inputButton" type="button" value="도서 목록으로"
+						onclick="window.location='book_list.do?pageNum=${pageNum}'">
+			
+				</c:if>
 			</td>
+			
+			
 		</tr>
 		
 	</table>

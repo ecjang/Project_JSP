@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.naming.Context;
@@ -472,7 +473,7 @@ public class BookDAOIpml implements BookDAO {
 	}
 
 	
-	// 도서 상태 변경
+	// 도서 상태 변경 : 장바구니에 추가 
 	@Override
 	public int bookstate( BookDTO dto) {
 		
@@ -532,8 +533,8 @@ public class BookDAOIpml implements BookDAO {
 				
 				// 주문 수량 만큼 도서 상태를 변경후 추가
 				sql = null;
-				sql="INSERT INTO CART ( B_NUM, M_NUM, ORDERNUM, PRICE, REG_DATE, STATE )" + 
-					" VALUES (?,?,?,?,?,?)";
+				sql="INSERT INTO CART ( C_NUM , B_NUM, M_NUM, ORDERNUM, PRICE, REG_DATE, STATE )" + 
+					" VALUES ( BOOK_SEQ.NEXTVAL ,?,?,?,?,?,?)";
 					
 				pstmt.close();
 				pstmt = conn.prepareStatement(sql);
@@ -614,13 +615,24 @@ public class BookDAOIpml implements BookDAO {
 		try{
 			conn = data.getConnection();
 			
+			/*	수정전
+			"SELECT C.B_NUM, B.TITLE, C.M_NUM, M.ID , C.ORDERNUM , C.PRICE , " +
+			"C.REG_DATE , C.STATE , rowNum " +
+			"FROM CART C INNER JOIN MEMBER M " +
+			"ON C.M_NUM = M.M_NUM INNER JOIN BOOK B "+
+			"ON C.B_NUM = B.B_NUM " +
+			"WHERE rowNum >= ? AND rowNum <= ? "; 
+			*/
+
 			String sql = 
-				"SELECT C.B_NUM, B.TITLE, C.M_NUM, M.ID , C.ORDERNUM , C.PRICE , " +
-				"C.REG_DATE , C.STATE , rowNum " +
+				
+				"SELECT * " +
+				"FROM ( SELECT C.C_NUM , C.B_NUM, B.TITLE , C.M_NUM, M.ID , C.ORDERNUM , " +
+				"C.PRICE , C.REG_DATE , C.STATE , rowNum rnum " +
 				"FROM CART C INNER JOIN MEMBER M " +
 				"ON C.M_NUM = M.M_NUM INNER JOIN BOOK B "+
-				"ON C.B_NUM = B.B_NUM "+
-				"WHERE rowNum >= ? AND rowNum <= ? "; 
+				"ON C.B_NUM = B.B_NUM ) " +
+				"WHERE rnum BETWEEN ? AND ? "; 
 			
 				pstmt=conn.prepareStatement(sql);
 				pstmt.setInt(1, start);
@@ -630,7 +642,7 @@ public class BookDAOIpml implements BookDAO {
 				if(rs.next()){
 					carts = new ArrayList<>(end-start+1);
 					
-					do{
+					do {
 						BookDTO dto = new BookDTO();
 						
 						/*----------------------------------------------------------*/
@@ -643,24 +655,33 @@ public class BookDAOIpml implements BookDAO {
 						/*----------------------------------------------------------*/
 						
 						
+						dto.setC_num(rs.getInt("C_NUM"));			// 장바구니 번호
 						dto.setB_num(rs.getInt("B_NUM"));			// 도서번호
 						dto.setTitle(rs.getString("TITLE")); 		// 도서제목
 						dto.setM_num(rs.getInt("M_NUM"));			// 회원번호
-						dto.setId(rs.getString("ID")); 			// 회원ID
-						dto.setOrdernum(rs.getInt("ORDERNUM"));	// 주문수량	
+						dto.setId(rs.getString("ID")); 				// 회원ID
+						dto.setOrdernum(rs.getInt("ORDERNUM"));		// 주문수량	
 						dto.setPrice(rs.getInt("PRICE"));			// 도서 가격
 						dto.setReg_date(rs.getTimestamp("REG_DATE"));// 등록일
 						dto.setState(rs.getString("STATE"));		// 도서상태
 						
 						
+						/*----------------------------------------------------------*/
+						
+						/*System.out.println(rs.getString("B_NUM")+"\n" );*/	// 테스트용
+						
 						carts.add(dto);
 					
-				}while(rs.next());
+					} while(rs.next());
+					
 				System.out.println("    : 데이터 로딩 성공");
+				
 			} else {
 				System.out.println("    : 데이터 로딩 중 오류 발생");
 			}
-			
+				
+				// 테스트용 
+				/*
 				sql = "SELECT * FROM CART";
 				pstmt.close();
 				pstmt=conn.prepareStatement(sql);
@@ -672,7 +693,9 @@ public class BookDAOIpml implements BookDAO {
 				}else {
 					System.out.println("값이 업음");
 				}
-			
+				*/
+				
+				
 		} catch ( SQLException e) { e.printStackTrace();
 			
 		} finally {
@@ -701,7 +724,7 @@ public class BookDAOIpml implements BookDAO {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) cnt=rs.getInt("COUNT(*)");
-			System.out.println("    :  목록 cnt값 : " + cnt + "개");
+			System.out.println("    : 목록 cnt값 : " + cnt + "개");
 			
 		} catch ( SQLException e) { e.printStackTrace();
 			
@@ -715,8 +738,529 @@ public class BookDAOIpml implements BookDAO {
 
 		return cnt;
 	}
-	
 
 	
+	
+	// 장바구니 수량 조절 
+	@Override
+	public int cart_ordernum(int c_num, int ordernum) {
+		
+		System.out.println("    : cart_ordernum() 매소드 실행");
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		int cnt = 0;
+		
+		try{
+			conn = data.getConnection();
+			String sql = "UPDATE CART SET ORDERNUM=? WHERE C_NUM=?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, ordernum);
+			pstmt.setInt(2, c_num);
+			cnt = pstmt.executeUpdate();
+			
+		} catch ( SQLException e) { e.printStackTrace();
+			
+		} finally {
+			try{
+				if( conn != null ) conn.close();
+				if( pstmt != null ) pstmt.close();
+			} catch( SQLException e) { e.printStackTrace(); }
+		}
 
+		return cnt;
+	}
+
+	
+	
+	// 장바구니 단일목록 삭제
+	@Override
+	public int cart_orderdel(int c_num) {
+
+		System.out.println("    : cart_orderdel() 매소드 실행");
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		int cnt = 0;
+		
+		try{
+			conn = data.getConnection();
+			String sql = "DELETE CART WHERE C_NUM=?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, c_num);
+			cnt = pstmt.executeUpdate();
+			
+		} catch ( SQLException e) { e.printStackTrace();
+			
+		} finally {
+			try{
+				if( conn != null ) conn.close();
+				if( pstmt != null ) pstmt.close();
+			} catch( SQLException e) { e.printStackTrace(); }
+		}
+
+		return cnt;
+	}
+	
+	// 장바구니 단일목록 주문목록으로 변경
+	@Override
+	public int cart_orderconfirm(int c_num, int ordernum) {
+		return 0;
+	}
+
+	
+	// 장바구니 원하는 서적수량 파악
+	@Override
+	public int cart_quan( int b_num  ){
+		
+		System.out.println("    : cart_quan() 매소드 실행");
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int cnt = 0;
+				
+		try{
+			conn = data.getConnection();
+			
+			BookDTO dto = new BookDTO();
+
+			// 우선 재고가 충분한지 파악하자
+			
+			String sql = "SELECT QUAN FROM BOOK WHERE B_NUM=?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, b_num);
+			rs = pstmt.executeQuery();
+			
+			if( rs.next() ){
+				cnt = rs.getInt("QUAN");
+				System.out.println("    : 재고수량 : " + rs.getInt("QUAN"));
+			} else { cnt = 0; }
+			
+			
+		} catch ( SQLException e) { e.printStackTrace();
+			
+		} finally {
+			try{
+				if( conn != null ) conn.close();
+				if( pstmt != null ) pstmt.close();
+			} catch( SQLException e) { e.printStackTrace(); }
+		}
+
+		return cnt;
+	}
+
+
+	// 장바구니 서적 내용 불러오기
+	@Override
+	public BookDTO cart_input(int c_num , int ordernum) {
+		
+		System.out.println("    : cart_input() 매소드 실행");
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int cnt = 0;
+		
+		
+		BookDTO dto = new BookDTO();
+				
+		try{
+			conn = data.getConnection();
+			
+			String sql = "SELECT * FROM CART WHERE C_NUM=?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, c_num);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()){
+				System.out.println("    : 장바구니 수량 변경 완료");
+				
+				dto.setB_num( rs.getInt("B_NUM"));
+				dto.setM_num( rs.getInt("M_NUM"));
+				dto.setQuan(ordernum);
+				dto.setPrice( rs.getInt("PRICE"));
+				dto.setReg_date( new Timestamp(System.currentTimeMillis()));
+				dto.setState("ORDER");
+				
+				System.out.println("dto.getM_num : " + dto.getM_num());
+				System.out.println("dto.getPrice : " + dto.getPrice());
+				
+				System.out.println("    : dto 내용 변경 완료");
+				
+				
+			} else {
+				System.out.println("    : 구량 변경중 오류 발생");
+			} 
+			
+		} catch ( SQLException e) { e.printStackTrace();
+			
+		} finally {
+			try{
+				if( conn != null ) conn.close();
+				if( pstmt != null ) pstmt.close();
+			} catch( SQLException e) { e.printStackTrace(); }
+		}
+
+		return dto;
+	}
+
+	
+	// 주문 테이블에 등록
+	@Override
+	public int cart_output(BookDTO dto) {
+		
+		System.out.println("    : cart_output() 매소드 실행");
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		int cnt = 0;
+		
+				
+		try{
+			conn = data.getConnection();
+			
+			String sql = "INSERT INTO BOOK_ORDER "	+
+						"( O_NUM , B_NUM , M_NUM , QUAN , PRICE )" +
+						"VALUES( CART_SEQ.NEXTVAL,?,?,?,?) ";
+			
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, dto.getB_num());
+			pstmt.setInt(2, dto.getM_num());
+			pstmt.setInt(3, dto.getQuan());
+			pstmt.setInt(4, dto.getPrice());
+			
+			cnt = pstmt.executeUpdate();
+			
+			
+		} catch ( SQLException e) { e.printStackTrace();
+			
+		} finally {
+			try{
+				if( conn != null ) conn.close();
+				if( pstmt != null ) pstmt.close();
+			} catch( SQLException e) { e.printStackTrace(); }
+		}
+
+		return cnt;
+	}
+
+	
+	// 카트 목록 전체 불러오기
+	@Override
+	public ArrayList<BookDTO> cart_getcart(int id) {
+	System.out.println("    : cart_output() 매소드 실행");
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ArrayList<BookDTO> dtos = null;
+		
+		ResultSet rs = null;
+				
+		try{
+			conn = data.getConnection();
+
+			String sql = "SELECT B_NUM , M_NUM , " + 
+					" ORDERNUM , PRICE  " +
+					" FROM CART " +
+					" WHERE M_NUM=? ";
+			
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, id );
+			rs = pstmt.executeQuery();
+			
+			if( rs.next()){
+				
+				dtos = new ArrayList<>();
+				
+				do{
+				
+					BookDTO dto = new BookDTO();
+					
+					dto.setB_num( rs.getInt("B_NUM") );
+					dto.setM_num( rs.getInt("M_NUM") );
+					dto.setQuan( rs.getInt("ORDERNUM") );
+					dto.setPrice( rs.getInt("PRICE") );
+					
+					dtos.add(dto);
+					
+				} while( rs.next() );
+			}
+			
+		} catch ( SQLException e) { e.printStackTrace();
+			
+		} finally {
+			try{
+				if( conn != null ) conn.close();
+				if( pstmt != null ) pstmt.close();
+			} catch( SQLException e) { e.printStackTrace(); }
+		}
+
+		return dtos;
+	}
+
+	
+	// 카트 목록 배열을 주문 테이블에 삽입
+	@Override
+	public int cart_moveorder(ArrayList<BookDTO> dtos) {
+		
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int cnt =0;
+				
+		try{
+			conn = data.getConnection();
+			
+			for (int i=0 ; i<dtos.size() ; i++){
+			
+				BookDTO dto = dtos.get(i);
+				
+				String sql = "INSERT INTO BOOK_ORDER " +
+							"( O_NUM , B_NUM , M_NUM , QUAN , PRICE )" +
+							" VALUES( ORDER_SEQ.NEXTVAL , ?,?,?,? )";
+				
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setInt(1, dto.getB_num() );
+				pstmt.setInt(2, dto.getM_num() );
+				pstmt.setInt(3, dto.getQuan() );
+				pstmt.setInt(4, dto.getPrice() );
+				
+				cnt = pstmt.executeUpdate();
+				
+			}
+			
+		} catch ( SQLException e) { e.printStackTrace();
+			
+		} finally {
+			try{
+				if( conn != null ) conn.close();
+				if( pstmt != null ) pstmt.close();
+			} catch( SQLException e) { e.printStackTrace(); }
+		}
+
+		return cnt;
+	}
+
+	
+	// 주문테이블로 옮기고 카트 테이블 id 검색후 삭제 + 장바구니 전체 비우기
+	@Override
+	public int cart_afterdel(int m_num) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int cnt =0;
+				
+		try{
+			conn = data.getConnection();
+				
+			String sql = "DELETE FROM CART WHERE M_NUM=?";
+			
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, m_num );
+			
+			cnt = pstmt.executeUpdate();
+				
+			
+		} catch ( SQLException e) { e.printStackTrace();
+			
+		} finally {
+			try{
+				if( conn != null ) conn.close();
+				if( pstmt != null ) pstmt.close();
+			} catch( SQLException e) { e.printStackTrace(); }
+		}
+
+		return cnt;
+	}
+
+	
+	
+	
+	// 주문테이블 정보 가져오기
+	@Override
+	public ArrayList<BookDTO> getorder(int start, int end) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<BookDTO> dtos = null;
+				
+		try{
+			conn = data.getConnection();
+
+			String sql = 
+					"SELECT * " + 
+					"FROM ( SELECT O_NUM, M_NUM, B_NUM, QUAN , PRICE , " +
+								"REG_DATE, STATE , ROWNUM rNum " +
+								
+							"FROM ( SELECT * FROM BOOK_ORDER " +
+									" ORDER BY O_NUM DESC " +
+								 ") " +
+							") " +
+					"WHERE rNum >= ? AND rNum <= ? ";
+				
+			
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, start );
+			pstmt.setInt(2, end );
+			rs = pstmt.executeQuery();
+			
+			if( rs.next()){
+				
+				dtos = new ArrayList<>();
+				
+				do{
+				
+					BookDTO dto = new BookDTO();
+					
+					dto.setO_num( rs.getInt("O_NUM") );
+					dto.setB_num( rs.getInt("B_NUM") );
+					dto.setM_num( rs.getInt("M_NUM") );
+					dto.setQuan( rs.getInt("QUAN") );
+					dto.setPrice( rs.getInt("PRICE") );
+					dto.setState( rs.getString("STATE"));
+					dto.setReg_date( rs.getTimestamp("REG_DATE"));
+					
+					
+					dtos.add(dto);
+					
+				} while( rs.next() );
+			}
+			
+		} catch ( SQLException e) { e.printStackTrace();
+			
+		} finally {
+			try{
+				if( conn != null ) conn.close();
+				if( pstmt != null ) pstmt.close();
+			} catch( SQLException e) { e.printStackTrace(); }
+		}
+
+		return dtos;
+	}
+
+	// 주문 테이블 목록 불러오기
+	@Override
+	public int getOrderCount() {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs =null;
+		int cnt=0;
+				
+		try{
+			conn = data.getConnection();
+				
+			String sql = "SELECT COUNT(*) FROM BOOK_ORDER";
+			
+			pstmt=conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+				
+			if( rs.next()){
+				
+				cnt = rs.getInt(1);
+				
+			}
+			
+			
+		} catch ( SQLException e) { e.printStackTrace();
+			
+		} finally {
+			try{
+				if( conn != null ) conn.close();
+				if( pstmt != null ) pstmt.close();
+			} catch( SQLException e) { e.printStackTrace(); }
+		}
+
+		return cnt;
+
+		
+	}
+
+	
+	// 주문 테이블 상태 변화하기
+	@Override
+	public int changeState(int o_num, String state) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int cnt=0;
+				
+		try{
+			conn = data.getConnection();
+				
+			String sql = "UPDATE BOOK_ORDER SET STATE=? WHERE O_NUM=?";
+			
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, state);
+			pstmt.setInt(2, o_num);
+			cnt = pstmt.executeUpdate();
+			
+		} catch ( SQLException e) { e.printStackTrace();
+			
+		} finally {
+			try{
+				if( conn != null ) conn.close();
+				if( pstmt != null ) pstmt.close();
+			} catch( SQLException e) { e.printStackTrace(); }
+		}
+
+		return cnt;
+		
+	}
+
+	
+	// 결사하자!
+	@Override
+	public int sum() {
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int sum = 0;
+				
+		try{
+			conn = data.getConnection();
+				
+			String sql = "SELECT price, sum(quan) as squan FROM BOOK_ORDER group by price"; 
+			
+			pstmt=conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if( rs.next() ){
+				do{
+					sum = (rs.getInt("price") * rs.getInt("squan")) + sum;
+				}while(rs.next());
+			}
+			
+			
+		} catch ( SQLException e) { e.printStackTrace();
+			
+		} finally {
+			try{
+				if( conn != null ) conn.close();
+				if( pstmt != null ) pstmt.close();
+			} catch( SQLException e) { e.printStackTrace(); }
+		}
+
+		return sum;
+		
+	}
+	
+	
+	
+	
+	
 }
+
+		
+	
+
+	
+
+

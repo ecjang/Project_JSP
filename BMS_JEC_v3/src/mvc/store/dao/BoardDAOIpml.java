@@ -112,6 +112,10 @@ public class BoardDAOIpml implements BoardDAO {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()){
+				
+				System.out.println("-- 여기까진 나온다!");
+				
+				
 				dtos = new ArrayList<>(end-start+1);
 				
 				do{
@@ -261,8 +265,18 @@ public class BoardDAOIpml implements BoardDAO {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, Mnum);
 			rs = pstmt.executeQuery();
-
+			
+			
+			
+			System.out.println("Mnum : " + Mnum);
+			System.out.println("ps : " + ps);
+			
+			
+			
+			
 			if(rs.next()){
+				System.out.println("rs.next");
+				System.out.println("rs.getString(PW) : " + rs.getString("PW"));
 				if( rs.getString("PW").equals(ps) ){
 					System.out.println("    : 비밀번호가 일치 cnt=1");
 					cnt = 1;
@@ -628,5 +642,7 @@ public class BoardDAOIpml implements BoardDAO {
 		
 		return kind;
 	}
+
+	
 	
 }

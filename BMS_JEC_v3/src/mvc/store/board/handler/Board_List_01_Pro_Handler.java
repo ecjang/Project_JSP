@@ -30,7 +30,8 @@ public class Board_List_01_Pro_Handler implements Command_Handler {
 		/*-----------------------------------------------------*/
 		
 		pageNum = req.getParameter("pageNum"); 
-		if(pageNum==null) pageNum="1";
+		System.out.println("pageNum : "  + pageNum);
+		if(pageNum==null || pageNum.equals("0")) pageNum="1";
 		
 		currentPage = Integer.parseInt(pageNum);			// 현재 페이지 설정
 		

@@ -18,7 +18,6 @@
 		border-collapse: collapse; " align="center">
 		
 		
-		<%-- 
 		<tr><th colspan="8" align="right" style="hight:25px;" >
 			
 			
@@ -29,16 +28,11 @@
 				</c:when>
 				
 				<c:when test="${memkind==1}">
-					<a href="write.do"> 게시물추가 </a> &emsp;
-					<a href="write.do"> 게시물수정 </a> &emsp;
-					<a href="write.do"> 게시물삭제 </a>
+					<a href="board_write_from.do?kind=NOTICE"> 게시물추가 </a> &emsp;
 				</c:when>
 			</c:choose>
-			
 			 
 		</th></tr>
-		--%>
-		
 		
 		<tr>
 			<th style="width:5%">	순서 </th>

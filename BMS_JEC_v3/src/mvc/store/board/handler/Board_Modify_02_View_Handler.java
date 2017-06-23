@@ -29,17 +29,25 @@ public class Board_Modify_02_View_Handler implements Command_Handler {
 		String ps	= req.getParameter("passwd");
 		
 		
+		System.out.println(pageNum);
+		System.out.println("Mnum - handler : " + (req.getParameter("Mnum")));
+		System.out.println("Mnum - handler : " + Mnum);
 		
-		req.setAttribute("no", no);
-		req.setAttribute("Mnum", Mnum);
-		req.setAttribute("kind", kind);
-		req.setAttribute("pageNum", pageNum);
+		
 		
 		BoardDTO dto = new BoardDTO();
 		BoardDAO dao = BoardDAOIpml.getInstance();
 		
 		int cnt = dao.pwCheck(Mnum,ps);
 		req.setAttribute("cnt", cnt);
+		
+		
+
+		req.setAttribute("no", no);
+		req.setAttribute("Mnum", Mnum);
+		req.setAttribute("kind", kind);
+		req.setAttribute("pageNum", pageNum);
+		
 		
 		if( cnt == 1){
 			
@@ -48,6 +56,8 @@ public class Board_Modify_02_View_Handler implements Command_Handler {
 			
 			n = dao.getCount("all")+1;
 			req.setAttribute("n", n);
+			
+			
 			
 			
 		} else {

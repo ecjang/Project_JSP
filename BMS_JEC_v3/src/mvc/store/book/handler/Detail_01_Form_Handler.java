@@ -29,6 +29,7 @@ public class Detail_01_Form_Handler implements Command_Handler  {
 		req.setAttribute("number", number);
 		req.setAttribute("pageNum", pageNum);
 		
+		req.setAttribute("b_num", 0);
 		
 		/*
 		System.out.println("  -> b_numÀÇ °ª " + b_num);

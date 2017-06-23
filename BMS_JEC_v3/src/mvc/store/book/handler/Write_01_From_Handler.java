@@ -16,8 +16,15 @@ public class Write_01_From_Handler implements Command_Handler {
 		System.out.println("  -> b_num°ª : " + req.getParameter("b_num") );
 		System.out.println("  -> pageNum°ª : " + req.getParameter("pageNum") );
 		*/
-		int b_num = Integer.parseInt( req.getParameter("b_num") );
-		int pageNum = Integer.parseInt( req.getParameter("pageNum") );
+		int b_num=0;
+		int pageNum =0;
+		int amincnt = (Integer) req.getAttribute("amincnt");
+		
+		
+		if( amincnt != 1 ){
+			b_num = Integer.parseInt( req.getParameter("b_num") );
+			pageNum = Integer.parseInt( req.getParameter("pageNum") );
+		}
 		
 		System.out.println("  -> b_num°ª : " + b_num);
 		

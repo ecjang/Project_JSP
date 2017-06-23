@@ -9,16 +9,21 @@
 	<% System.out.println( "  -> 04_Board_Modify_From" );  %>
 	
 	<form action="board_modify_view.do" method="post" name="passwdform" onsubmit="return passwdCheck()">
-		
 		<input type="hidden" value="${no}" name="no" >
 		<input type="hidden" value="${Mnum}" name="Mnum" >
 		<input type="hidden" value="${pageNum}" name="pageNum">
 		<input type="hidden" value="${kind}" name="kind">
 		
+		<% String Mnum = request.getParameter("Mnum"); 
+		System.out.println("Mnum : " + Mnum);
+		%>
+		
+		
+		
 		<table align="center" style="width:40%">
 			
 			<tr>
-				<th colspan="2"> 비밀번호를 입력하세요. </th>
+				<th colspan="2"> 비밀번호를 입력하세요. ${Mnum}</th>	
 			</tr>
 			
 			<tr>

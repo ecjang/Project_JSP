@@ -38,15 +38,23 @@ public class Board_Write_01_Form_Handler implements Command_Handler {
 			ref_step 	= Integer.parseInt	( req.getParameter("ref_step")	);
 			ref_level	 = Integer.parseInt	( req.getParameter("ref_level")	);
 			
-			
 		}
 		
 		BoardDAO dao = new BoardDAOIpml().getInstance();
 		
-		int Mnum = Integer.parseInt( req.getParameter("Mnum") );
-		int cnt = dao.idCheck(Mnum);
 		
-		if( cnt==0 ){
+		int Mnum=0;
+		int cnt=0;
+		if( req.getParameter("Mnum")!=null ){
+		
+			Mnum = Integer.parseInt( req.getParameter("Mnum") );
+			cnt = dao.idCheck(Mnum);
+		
+		}
+		
+		String memId = (String) req.getSession().getAttribute("memId");
+		
+		if( memId == null ){
 			System.out.println("  -> 로그인 되어 있지 않음");
 			
 		} else {

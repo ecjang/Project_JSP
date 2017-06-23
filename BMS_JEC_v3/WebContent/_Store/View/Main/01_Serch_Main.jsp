@@ -6,7 +6,7 @@
 <!-- 메인은 아이프레임으로 불러오기 때문에 헤더가 없음 -->
 
 <!DOCTYPE html><html>
-<body onload="search_focus();">
+<body onload="search_focus()">
 	
 	<% System.out.println("  -> 01_Serch_Main "); %>
 	<h3> <center> 검색페이지 </center> </h3>
@@ -30,7 +30,7 @@
 			<tr style="width:85%" align="center">
 				<td> 
 
-					<input type="text" value="수학"  <%-- "${str}" --%> name="str" style="width:50%";  > 
+					<input name="str" type="text" value="수정"  <%-- "${str}" --%> name="str" style="width:50%";  > 
 					&ensp;
 					<input type="submit" value="검색" >
 				</td>
@@ -78,11 +78,14 @@
 					<!--    b_num , pageNum , start , str 넘김     -->
 					<!-- ---------------------------------------------------------- -->
 					
+					<!-- 제목을 누르면 세부 정보를 볼 수 있다.  -->
+					<a href="search_detail.do?b_num=${d.b_num}&pageNum=${pageNum}&start=${start}&str=${str}"> ${d.title} </a>	
 					
+					<%-- 이건 새창으로 열기
 					<a href="search_detail.do?b_num=${d.b_num}&pageNum=${pageNum}&start=${start}&str=${str}" 
 						onclick="window.open(this.href, 'deail' ,'eft=10,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes');
 					return false;">  ${d.title}  </a>
-						 
+					 --%>	 
 					 
 				</td>	
 				

@@ -10,6 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mvc.store.board.handler.Board_Delete_02_Pro_Handler;
+import mvc.store.admin.handler.Admin_02_Write_Pro_Handler;
+import mvc.store.admin.handler.Admin_03_Modify_Pro_Handler;
+import mvc.store.admin.handler.Admin_04_Delete_Pro_Handler;
+import mvc.store.admin.handler.Admin_05_Pay_List_Pro_Handler;
+import mvc.store.admin.handler.Admin_01_main_Pro_Handler;
 import mvc.store.board.handler.Board_Delete_01_From_Handler;
 import mvc.store.board.handler.Board_Detail_01_Pro_Handler;
 import mvc.store.board.handler.Board_List_01_Pro_Handler;
@@ -26,7 +31,14 @@ import mvc.store.book.handler.Modify_02_Pro_Handler;
 import mvc.store.book.handler.Modify_01_From_Handler;
 import mvc.store.book.handler.Write_01_From_Handler;
 import mvc.store.book.handler.Write_02_Pro_Handler;
-import mvc.store.guest.handler.Guest_Cart_01_Pro_Handler;
+import mvc.store.guest.handler.Guest_Cart_02_Pro_Handler;
+import mvc.store.guest.handler.Guest_Cart_03_Ordernum_Pro_Handler;
+import mvc.store.guest.handler.Guest_Cart_04_Orderdel_Pro_Handler;
+import mvc.store.guest.handler.Guest_Cart_05_Orderconfirm_Pro_Handler;
+import mvc.store.guest.handler.Guest_Cart_06_allbuy_Pro_Handler;
+import mvc.store.guest.handler.Guest_Order_01_View_Handler;
+import mvc.store.guest.handler.Guest_Order_02_Pro_Handler;
+import mvc.store.guest.handler.Guest_Cart_01_View_Handler;
 import mvc.store.main.handler.Main_Search_01_main_Pro_Handler;
 import mvc.store.main.handler.Main_Search_02_Detail_Pro_Handler;
 import mvc.store.member.handler.ConfirmId_Handler;
@@ -91,8 +103,9 @@ public class MFrontController extends HttpServlet {
 			viewPage = "/_Store/View/Board/01_Board_Main.jsp"; 
 		
 		} else if ( url.contains("/header_m5.do") ){
-			System.out.println("메뉴5. 칸5 으로 이동  ");
-			viewPage = "/_Store/View/Main.jsp"; 
+			System.out.println("메뉴5. 관리자 메뉴로 이동  ");
+			viewPage = "admin_mian.do"; 
+			/*viewPage = "/_Store/View/Admin/01_Admin_Main.jsp"; */
 		
 		} else if ( url.contains("/main.do") ){
 			System.out.println("메인으로 이동  ");
@@ -316,19 +329,84 @@ public class MFrontController extends HttpServlet {
 		
 		if (url.contains("/guest_cart.do")){
 			System.out.println("장바구니로 이동" );
-			Guest_Cart_01_Pro_Handler handler = new Guest_Cart_01_Pro_Handler();
+			Guest_Cart_01_View_Handler handler = new Guest_Cart_01_View_Handler();
+			viewPage = handler.orderexecute(req, res);
+	
+		} else if (url.contains("/guest_cart_pro.do")){
+			System.out.println("장바구니 출력" );
+			Guest_Cart_02_Pro_Handler handler = new Guest_Cart_02_Pro_Handler();
+			viewPage = handler.orderexecute(req, res);
+		
+		} else if (url.contains("/guest_cart_ordernum_pro.do")){
+			System.out.println("장바구니 수량조절" );
+			Guest_Cart_03_Ordernum_Pro_Handler handler = new Guest_Cart_03_Ordernum_Pro_Handler();
+			viewPage = handler.orderexecute(req, res);
+		
+		} else if (url.contains("/guest_cart_orderdel_pro.do")){
+			System.out.println("장바구니 삭제버튼" );
+			Guest_Cart_04_Orderdel_Pro_Handler handler = new Guest_Cart_04_Orderdel_Pro_Handler();
+			viewPage = handler.orderexecute(req, res);
+		
+		} else if (url.contains("/guest_cart_orderconfirm_pro.do")){
+			System.out.println("장바구니 주문버튼" );
+			Guest_Cart_05_Orderconfirm_Pro_Handler handler = new Guest_Cart_05_Orderconfirm_Pro_Handler();
+			viewPage = handler.orderexecute(req, res);
+		
+		} else if (url.contains("/guest_cart_allbuy_pro.do")){
+			System.out.println("전체 주문하기" );
+			Guest_Cart_06_allbuy_Pro_Handler handler = new Guest_Cart_06_allbuy_Pro_Handler();
+			viewPage = handler.orderexecute(req, res);
+		
+		}
+		
+		/* 고객메뉴 : 주문 테이블    -----------------------------------------------------*/
+			
+		if (url.contains("/guest_order.do")){
+			System.out.println("주문 테이블 이동" );
+			Guest_Order_01_View_Handler handler = new Guest_Order_01_View_Handler();
 			viewPage = handler.orderexecute(req, res);
 			
-			
-			
-			
-			
-			
-			
+		} else if (url.contains("/guest_order_state.do")){
+				System.out.println("주문상태 변환");
+				Guest_Order_02_Pro_Handler handler = new Guest_Order_02_Pro_Handler();
+				viewPage = handler.orderexecute(req, res);
 		}
 		
 		
 		
+		
+		
+		/* 관리자메뉴   -----------------------------------------------------*/
+		
+		if (url.contains("/admin_mian.do")){
+			System.out.println("관리자페이지로 이동" );
+			Admin_01_main_Pro_Handler handler = new Admin_01_main_Pro_Handler();
+			viewPage = handler.supervise(req, res);
+		
+		} else if (url.contains("/admin_write.do")){
+				System.out.println("관리자에서 도서추가 기능" );
+				Admin_02_Write_Pro_Handler handler = new Admin_02_Write_Pro_Handler();
+				viewPage = handler.supervise(req, res);
+			
+		} else if (url.contains("/admin_modify.do")){
+			System.out.println("관리자에서 도서수정 기능" );
+			Admin_03_Modify_Pro_Handler handler = new Admin_03_Modify_Pro_Handler();
+			viewPage = handler.supervise(req, res);
+		
+		} else if (url.contains("/admin_modify.do")){
+			System.out.println("관리자에서 도서삭제 기능" );
+			Admin_04_Delete_Pro_Handler handler = new Admin_04_Delete_Pro_Handler();
+			viewPage = handler.supervise(req, res);
+		
+		} else if (url.contains("/admin_pay_list.do")){
+			System.out.println("관리자에서 도서삭제 기능" );
+			Admin_05_Pay_List_Pro_Handler handler = new Admin_05_Pay_List_Pro_Handler();
+			viewPage = handler.supervise(req, res);
+		
+		}   
+			
+			
+			
 		/* viewPage로 페이지 이동 설정  -----------------------------------------------------*/
 		
 		RequestDispatcher dispatcher = 

@@ -7,7 +7,7 @@
 			<td> <a href="header_m2.do"> 회원 </a> </td>
 			<td> <a href="header_m3.do"> 도서 </a> </td>
 			<td> <a href="header_m4.do"> 보드 </a> </td>
-			<td> <a href="header_m5.do"> 칸5 </a> </td>
+			<td> <a href="header_m5.do"> 관리 </a> </td>
 		</tr>
 	</table>
 </header>

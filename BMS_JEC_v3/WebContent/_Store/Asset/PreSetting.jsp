@@ -2,7 +2,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<%@ include file="Header.jsp"%>
+
+<c:if test="${param.b_num==null || b_num==0}">
+	<%@ include file="Header.jsp"%>
+</c:if>
+
+
 
 <c:set var="jec" value="/BMS_JEC_v3/_Store/Asset/"/>
 
@@ -22,4 +27,5 @@
 <c:if test="${sessionScope.m_num != null}">
 	<c:set var="m_num" 	value="${sessionScope.m_num}"/>
 </c:if>	
+
 

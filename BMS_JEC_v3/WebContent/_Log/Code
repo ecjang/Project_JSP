@@ -1,0 +1,104 @@
+
+
+	로그인 체크 할 때
+	<c:if test="${memId==null}">
+
+	<% System.out.println("  -> 로그인 필요");  %>
+	<input type="hidden" name="m_num" value="${Sessionscope.m_num}">	
+	<script type="text/javascript">
+		alert("로그인이 필요합니다.");
+
+		window.location ="header_m2.do";
+		/* opener.open('about:blank','_self').close(); */
+
+	 </script>
+		 
+	</c:if>
+
+	<c:if test="${memId!=null}">
+	
+		<% int m_num = (Integer)request.getSession().getAttribute("m_num");
+			System.out.println("  -> m_num : " + m_num); %>
+	</c:if>		
+	 
+	 
+	 ---------------------------
+	 
+	 버튼 클릭시 이동
+	 <input type="button" value="도서 목록으로" onclick="window.location='search_list.do?str=${str}&pageNum=${pageNum}'">
+	 
+	 
+	 ---------------------------
+	 
+	 
+	 로그인으로 이동
+	 
+	 if ( req.getParameter("m_num") == null  ){
+			return "header_m2.do"; 
+		} else{
+			int m_num = 	Integer.parseInt( req.getParameter("m_num") 	);	// 회원번호
+		}
+		
+		
+		 ---------------------------
+		 
+	헤더 조건 문
+	
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	<c:if test="${b_num==null}">
+		<%@ include file="../../Asset/PreSetting.jsp" %>
+	</c:if>
+	
+	
+	
+	
+	<%  
+				
+				if ( (Integer)request.getSession().getAttribute("m_num")==null ){
+					System.out.println( "   : 로그인 안됨" );
+					 %>	
+					 
+					<script type="text/javascript">
+					
+					// 확인
+					if( confirm("장바구니에 담으려면 로그인이 필요합니다.\n 로그인 하시겠습니까?") == true ){
+						window.location="header_m2.do?b_num=${b_num}";
+					} 
+					
+					/* confirnm("${b_num}"); */	//책 번호 확인 용 출력
+					</script>
+					
+					
+				<%  	
+				} else {
+					int m_num = (Integer)request.getSession().getAttribute("m_num"); 
+					System.out.println("    : 로그인한 회원번호 : " + m_num );
+				}
+				%>
+				  
+ 	---------------------------
+				  
+	return "/_Store/View/Book/05_Book_List_Write_Pro.jsp";			  
+				  
+				  
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

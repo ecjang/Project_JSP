@@ -3,6 +3,7 @@ package mvc.store.dao;
 import java.util.ArrayList;
 
 import mvc.store.dto.BoardDTO;
+import mvc.store.dto.BookDTO;
 
 public interface BoardDAO {
 

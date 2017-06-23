@@ -13,7 +13,8 @@
 	
 	<c:if test="${cnt==0}">
 		<script type="text/javascript">
-			errorAlert(updateError);			
+			errorAlert(updateError);	
+			window.history.back();
 		</script>
 	</c:if>
 	
