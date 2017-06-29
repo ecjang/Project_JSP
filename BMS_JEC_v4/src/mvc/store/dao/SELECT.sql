@@ -1,0 +1,54 @@
+SELECT * FROM BOOK order by M_NUM;
+
+
+SELECT * FROM MEMBER ORDER BY M_NUM;
+
+
+SELECT * FROM BOARD ORDER BY M_NUM;
+
+----------------------------
+
+ [ MEMBER ] 
+
+M_NUM  
+ID  
+PW  
+NAE 
+JUMIN1  
+JUMIN2  
+HP 
+EMAIL  
+REG_
+KIND  
+
+----------------------------
+
+ [ BOOK ]
+
+B_NUM
+M_NUM
+TITLE
+SUBTITLE
+AUTHOR
+QUAN
+PRICE
+PUBLISH
+REG_DATE
+STATE
+
+----------------------------
+
+ [ BOARD ]
+
+M_NUM 
+NO 
+TITLE 
+WRITER 
+CONTENT 
+REG_DATE
+VIEWS 
+REF
+REF_STEP 
+REF_LEVEL
+KIND 
+IP
