@@ -10,7 +10,7 @@
 	<h3> <center> 메인 도서 세부정보 페이지 </center> </h3>
 
 
-	<form action="guest_cart.do"  method="post" name="search_detail_form" >
+	<form action="" name="maindetailform" >
 	
 	<table align="center" style="text-align:center;" >
 		
@@ -48,41 +48,32 @@
 			<td style="width:150px;" > ${dto.quan} </td> 
 		</tr>
 		
-		
 		<tr>
 		</tr>
 		
 		<tr>
 			<td colspan="4">
 				
-				<% if ( (Integer)request.getSession().getAttribute("m_num")!=null ){%>
-					<!-- 회원번호 --> 		<input type="hidden" name="m_num" value="${Sessionscope.m_num}">
-				<%}%>
 				
-				<!-- 책 번호 --> 		<input type="hidden" name="b_num" value="${b_num}">				
-				<!-- 페이지 번호 --> 	<input type="hidden" name="pageNum" value="${pageNum}">			
-				<!-- 시작 번호 -->		<input type="hidden" name="start" value="${start}">				
-				<!-- 상태 : CART -->	<input type="hidden" name="state" value="CART">		
+				<c:if test="${sessionScope.m_num != null}">
+					<c:set var="m_num" value="${sessionScope.m_num}"/>
+				</c:if>
 				
-				<!-- 검색어는 필요없음 -->
-				<%-- <!-- 검색어 -->		<input type="hidden" name="str" value="${str}">		 --%>			
+				<input type="hidden" name="b_num" value="${b_num}">				
+				<input type="hidden" name="pageNum" value="${pageNum}">			
+				<input type="hidden" name="start" value="${start}">				
 				
+				수량 입력 : <input value="5"  type="number" name="quan"  id="quan" 
+					max="${dto.quan}" min="1" required  >
 				
-				수량 입력 : <input value="2"  type="number" name="ordernum"  
-					max="${dto.quan}"  placeholder="1" min="1"  required>
+				<input type="hidden" id="state_cart" name="state" value="CART">	
+				<input type="submit" value="장바구니" onclick="cart_btn('CART');">
 				
-				
-				<input type="submit" value="장바구니" >
-				
-				<%-- 
-				<input type="hidden" name="state" value="ORDER">
-				<input type="button"  value="구매하기" 
-					onclick="window.location='search_list.do?str=${str}&pageNum=${pageNum}'">
-					 --%>
-					
+				<input type="hidden" id="state_order" name="state" value="ORDER">		
+				<input type="submit" value="주문신청" onclick="cart_btn('ORDER');">	 
 			
-				<input type="button" value="도서 목록으로"
-					onclick="window.location='01_main_list.do?str=${str}&pageNum=${pageNum}'">
+				<input type="button" value="뒤로"
+					onclick="window.location='02_main_list.do?str=${str}&pageNum=${pageNum}'">
 			
 					
 			</td>

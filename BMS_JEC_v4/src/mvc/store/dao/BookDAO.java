@@ -16,7 +16,6 @@ public interface BookDAO {
 	static final int PAY_CANCLE 		= 7;
 	
 	
-	
 	public int BookCnt();
 	public ArrayList<BookDTO> NewBookCnt(int cnt);
 	public ArrayList<BookDTO> BookSearch(String str, int start, int end );
@@ -26,28 +25,8 @@ public interface BookDAO {
 	public int upadte(BookDTO dto);
 	public int book_insert(BookDTO dto);
 	public int delete(int num);
-	
-	
 	public int searchCnt(String str);
 	
-	/*------------------------------------*/
-	
-	public int bookstate( BookDTO dto);
-	public ArrayList<BookDTO> getcart(int start , int end);
-	public int getCount_cart();
-	public int cart_ordernum( int c_num , int ordernum );
-	public int cart_orderdel(int c_num);
-	public int cart_orderconfirm( int c_num , int ordernum );
-	public int cart_quan(int b_num);
-	public BookDTO cart_input(int c_num , int ordernum);
-	public int cart_output(BookDTO dto);
-	public ArrayList<BookDTO> cart_getcart(int id);
-	public int cart_moveorder(ArrayList<BookDTO> dtos);
-	public int cart_afterdel(int m_num);
-	
-	public ArrayList<BookDTO> getorder(int start, int end);
-	public int getOrderCount();
-	public int changeState(int o_num, String state);
-	public int sum();
+
 	
 }

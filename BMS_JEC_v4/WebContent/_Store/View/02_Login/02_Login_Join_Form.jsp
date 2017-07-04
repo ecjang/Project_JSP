@@ -14,6 +14,7 @@
 	 	<!-- 중복확인 버튼 클릭 여부를 체크하기 위함 -->
 	 	<input type="hidden" name="ConfirmId" value="0">
 	 	
+	 	
 	 	<table>
 	 		<tr> <th colspan="2"> 회원정보를 입력하세요. </th></tr>
 	 		

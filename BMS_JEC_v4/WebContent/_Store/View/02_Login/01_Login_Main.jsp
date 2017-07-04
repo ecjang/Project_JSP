@@ -5,24 +5,32 @@
 
 
 <!DOCTYPE html><html>
-<body onload="mainFocus()">
+<body onload="mainFocus();">
 
-	
-	
 	
 	<h3><center> 로그인 메인 페이지 </center> </h3>
 	<% System.out.println(" -> 01_Login_Main "); %>
-	
-	<c:if test="${sessionScope.memId == null}">
+		
+		
+
 	
 		<!-- 로그인 양식  -->
 		<form action="02_login_loginpro.do" method="post" name="mainform" onsubmit="return mainCheck();">
 			
-			<c:if test="${param.b_num != null}">
-				<input type="hidden" name="b_num" value="${param.b_num}"/>
+			<c:if test="${sessionScope.memId == null}">
+			
+			<!-- 되돌아갈 함수  -->
+			<c:if test="${param.back != null}">
+				<input type="hidden" name="back" value="${param.back}"/>
 			</c:if>
 			
-			<table align="center" >
+			
+			<c:if test="${param.b_num != null}">
+				<input type="hidden" name="b_num" value="${param.b_num}"/>
+			</c:if>	
+
+						
+			<table align="center">
 			
 			<tr><th colspan="2">
 			
@@ -34,10 +42,13 @@
 				<c:when test="${param.cnt==3 || cnt==3}"> 	해당 서비스를 이용하시려면 로그인 해주세요. </c:when>
 				<c:otherwise> 환영합니다. </c:otherwise>
 			</c:choose>
+			 	
+		
+			 
 			 
 			</th></tr>
 			
-			<tr><th>아이디</th>	<td><input class="input" type="text" name ="id" maxlength="20"></td></tr>
+			<tr><th>아이디</th>	<td><input class="input" type="text" name ="id" maxlength="20" ></td></tr>
 			<tr><th>비밀번호</th>	<td><input class="input" type="password" name ="passwd" maxlength="10"></td></tr>
 			<tr><td colspan="2">
 			<input class="inputButton" type="submit" value="로그인">
@@ -49,31 +60,20 @@
 	</c:if>
 
 	<c:if test="${sessionScope.memId != null}">
-	
+		
+		
 		<table align="center" >
 			<tr><td align="center" style="width:300px;"> <span>${sessionScope.memId}</span>님 안녕하세요. </td>
 			<tr><th><input class="inputButton" type="button" value="정보수정" onclick="window.location='03_login_modifyform.do'">
 			<tr><th><input class="inputButton" type="button" value="회원탈퇴" onclick="window.location='04_login_deleteform.do'">
 			<tr><th><input class="inputButton" type="button" value="로그아웃" onclick="window.location='05_login_logout.do'">
-			<tr><th><input class="inputButton" type="button" value="장바구니" onclick="window.location='06_order_guestcart_pro.do'">
-			<tr><th><input class="inputButton" type="button" value="주문목록" onclick="window.location='07_order_guestorder.do'">
+			<tr><th><input class="inputButton" type="button" value="장바구니" onclick="window.location='06_header_cart.do'">
+			<tr><th><input class="inputButton" type="button" value="주문목록" onclick="window.location='07_header_order.do'">
 			
 		</table>
-	
+		
 	</c:if>
 	
-	
-	<%-- 
-	<% int b_num = (Integer)request.getAttribute("b_num"); 
-	System.out.println("  -> b_num 값 : " + b_num );  %> 
-	 --%>
-	 <%-- 
-	<c:set var="cnt" 	value="${requestScope.cnt}"/>
-	 --%>
-	<%-- <c:set var="memId" 	value="${sessionScope.memId}"/>  --%>
-	
-	
-	
-	
+		
 </body>
 </html>

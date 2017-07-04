@@ -9,7 +9,8 @@
 			<td> <a href="m2_header_login.do"> 회원 </a> </td>
 			
 			<c:if test="${memId!=null}">
-				<td> <a href="m3_header_m3_order.do"> 주문 </a> </td>
+				<td> <a href="m3_header_cart.do"> 카트 </a> </td>
+				<td> <a href="m7_header_order.do"> 주문 </a> </td>
 			</c:if>
 			
 			<td> <a href="m4_header_book.do"> 도서 </a> </td>

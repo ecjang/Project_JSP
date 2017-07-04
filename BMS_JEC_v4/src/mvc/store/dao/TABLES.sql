@@ -143,7 +143,7 @@ ALTER TABLE BOOK DROP COLUMN PUBLISH;
 
  	
 INSERT INTO BOOK (B_NUM, M_NUM, TITLE, AUTHOR, QUAN, PRICE, REG_DATE, KIND, STATE)
-VALUES(BOOK_SEQ.NEXTVAL,1,'2','3',4,5,'2015/05/05','7','8');
+VALUES(CART_SEQ.NEXTVAL,1,'2','3',4,5,'2015/05/05','7','8');
 
 select * from member order by m_num;
 select * from book order by b_num DESC;

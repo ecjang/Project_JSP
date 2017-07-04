@@ -54,7 +54,12 @@
 		<tr>
 			<td colspan="4">
 				
-				<c:if test="${memId =='id5'}">
+				<c:if test="${memkind !=1}">
+					<input class="inputButton" type="button" value="도서 목록으로"
+						onclick="window.location='06_book_list.do?pageNum=${pageNum}'">
+				</c:if>
+				
+				<c:if test="${memkind ==1}">
 
 					<input class="inputButton" type="button" value="도서 정보 수정"
 						onclick="window.location='04_book_modify.do?b_num=${dto.b_num}&pageNum=${pageNum}'">
