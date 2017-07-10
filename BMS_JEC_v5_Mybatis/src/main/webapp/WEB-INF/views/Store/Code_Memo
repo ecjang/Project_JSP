@@ -1,0 +1,7 @@
+
+Service Req Source
+
+Map<String,Object> map = model.asMap();
+HttpServletRequest req = (HttpServletRequest) map.get("req");
+
+

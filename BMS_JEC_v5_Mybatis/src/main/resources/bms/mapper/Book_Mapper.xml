@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.bms.dao.c_book.BookDAO">
+	
+	
+	<select id="cnt_book" resultType="int">
+		<![CDATA[
+		SELECT COUNT(*) FROM BOOK
+		]]>
+	</select>
+	
+	
+	<select id="get_books" parameterType="java.util.Map"  resultType="com.mybatis.bms.dto.BookDTO">
+		<![CDATA[
+		SELECT * 
+		FROM ( SELECT B_NUM, TITLE, SUBTITLE, AUTHOR, QUAN, 
+						PRICE, REG_DATE, KIND, STATE, rowNum rNum 
+				FROM ( SELECT * FROM BOOK 
+						ORDER BY B_NUM DESC ) 
+				) 
+		WHERE rNum >= #{start} AND rNum <= #{end}
+		]]>
+	</select>
+	
+	
+	<select id="getbook" parameterType="int" resultType="com.mybatis.bms.dto.BookDTO">
+		<![CDATA[
+		SELECT * FROM BOOK WHERE b_num=#{b_num}
+		]]>
+	</select>
+	
+	<delete id="delete_book" parameterType="int">
+		<![CDATA[
+			DELETE BOOK WHERE B_NUM=#{b_num}
+		]]>
+	</delete>
+	
+	
+	<insert id="insert_book" parameterType="com.mybatis.bms.dto.BookDTO">
+		<![CDATA[
+			INSERT INTO BOOK 
+			( B_NUM, M_NUM, TITLE, SUBTITLE, AUTHOR, QUAN, PRICE, REG_DATE, KIND, STATE )
+			VALUES (BOOK_SEQ.NEXTVAL,#{m_num},#{title},#{subtitle},#{author},#{quan},#{price},#{reg_date},#{kind},#{state})
+		]]>
+	</insert>
+	
+	
+	
+	<update id="upadte_book" parameterType="com.mybatis.bms.dto.BookDTO">
+		<![CDATA[
+			UPDATE BOOK SET
+			TITLE=#{title}, SUBTITLE=#{subtitle}, AUTHOR=#{author}, PRICE=#{price}, QUAN=#{quan}, KIND=#{kind} WHERE B_NUM=#{b_num}
+		]]>
+	</update>
+	
+</mapper>

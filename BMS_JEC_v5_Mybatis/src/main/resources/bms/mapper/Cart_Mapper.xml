@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.bms.dao.e_cart.CartDAO">
+
+	
+	<select id="insert_cart_01" parameterType="com.mybatis.bms.dto.BookDTO" resultType="int">
+		<![CDATA[
+			SELECT QUAN FROM BOOK WHERE B_NUM=#{b_num}
+		]]>
+	</select>
+	
+	
+	<update id="insert_cart_02" parameterType="com.mybatis.bms.dto.BookDTO">
+		<![CDATA[
+			UPDATE BOOK SET QUAN=(QUAN-#{quan}) WHERE B_NUM=#{b_num}
+		]]>
+	</update>
+	
+	
+	<insert id="insert_cart_03" parameterType="com.mybatis.bms.dto.BookDTO">
+		<![CDATA[
+			INSERT INTO CART ( C_NUM , B_NUM, M_NUM, QUAN, PRICE, REG_DATE, STATE )
+			VALUES ( CART_SEQ.NEXTVAL ,#{b_num},#{m_num},#{quan},#{price},#{reg_date},#{state})
+		]]>
+	</insert>
+	 
+	
+	 <select id="cnt_cart" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM CART WHERE STATE='CART'
+		]]>
+	</select>
+	
+	
+	 <select id="get_carts" parameterType="java.util.Map" resultType="com.mybatis.bms.dto.CartDTO">
+		<![CDATA[
+		SELECT * 
+		FROM ( SELECT C.C_NUM, C.B_NUM, C.M_NUM, B.TITLE AS title, M.ID AS id, C.QUAN, 
+						C.PRICE, C.REG_DATE, C.STATE, B.QUAN AS bookquan, rowNum rnum 
+				FROM CART C 
+				JOIN MEMBER M ON C.M_NUM = M.M_NUM 
+				JOIN BOOK B ON C.B_NUM = B.B_NUM )
+		WHERE rnum BETWEEN #{start} AND #{end}
+		]]>
+	</select>
+	 
+	 
+	 <select id="cnt_bookquan" parameterType="int" resultType="int" >
+		<![CDATA[
+			SELECT QUAN FROM BOOK WHERE B_NUM=#{b_num}
+		]]>
+	</select>
+	
+	
+	 <select id="cnt_cartquan" parameterType="int" resultType="int" >
+		<![CDATA[
+			SELECT QUAN FROM CART WHERE C_NUM=#{c_num}
+		]]>
+	</select>
+	
+	
+	 <update id="quanminus_cart_01" parameterType="java.util.Map" >
+		<![CDATA[
+			UPDATE CART SET QUAN=(QUAN-#{quan_abs}) WHERE C_NUM=#{c_num}
+		]]>
+	</update>
+	
+	
+	<update id="quanminus_cart_02" parameterType="java.util.Map">
+		<![CDATA[
+			UPDATE BOOK SET QUAN=(QUAN + #{quan_abs})
+			WHERE B_NUM =
+			( SELECT B_NUM
+			FROM BOOK B JOIN CART C  
+			USING(B_NUM) 
+			WHERE C_NUM = #{c_num} )
+		]]>
+	</update>
+	
+	
+	<update id="quanplus_cart_01" parameterType="java.util.Map">
+		<![CDATA[
+			UPDATE CART SET QUAN=(QUAN + #{quan_abs}) WHERE C_NUM=#{c_num}
+		]]>
+	</update>
+	
+	
+	<update id="quanplus_cart_02" parameterType="java.util.Map">
+		<![CDATA[
+			UPDATE BOOK SET QUAN=(QUAN - #{quan_abs})
+			WHERE B_NUM =
+			( SELECT B_NUM
+			FROM BOOK B JOIN CART C  
+			USING(B_NUM) 
+			WHERE C_NUM = #{c_num} )
+		]]>
+	</update>
+	
+	
+	<delete id="delete_cart_byc_num" parameterType="int" >
+		DELETE CART WHERE C_NUM=#{c_num}
+	</delete>
+	
+	
+	 <select id="get_cart" parameterType="java.util.Map" resultType="com.mybatis.bms.dto.CartDTO" >
+		<![CDATA[
+			SELECT * FROM CART WHERE C_NUM=#{c_num}
+		]]>
+	</select>
+	
+	
+	<insert id="insert_order" parameterType="com.mybatis.bms.dto.CartDTO" >
+		<![CDATA[
+		 	INSERT INTO BUY 
+				( O_NUM , B_NUM , M_NUM , QUAN , PRICE, REG_DATE, STATE  )
+			VALUES( BUY_SEQ.NEXTVAL,#{b_num},#{m_num},#{quan},#{price},#{reg_date},#{state})
+		]]>
+	</insert>
+	
+	
+	
+	<select id="getall_cart"  parameterType="int" resultType="com.mybatis.bms.dto.CartDTO" >
+	<![CDATA[
+		SELECT *
+		FROM CART 
+		WHERE M_NUM=#{m_num}
+	]]>
+	</select>
+	
+	
+	<insert id="allinsert_order" parameterType="com.mybatis.bms.dto.CartDTO" >
+	<![CDATA[
+		INSERT INTO BUY ( O_NUM , B_NUM , M_NUM , QUAN , PRICE )
+		 VALUES( BUY_SEQ.NEXTVAL, #{b_num}, #{m_num}, #{quan} ,#{price} )
+	]]>
+	</insert>
+	
+	
+	<!-- 
+	<insert id="allinsert_order" parameterType="java.util.List">
+		
+		<foreach collection="list" item="cart" open="" close="" separator="" >
+			INSERT INTO BUY ( O_NUM , B_NUM , M_NUM , QUAN , PRICE ) VALUES 
+			( BUY_SEQ.NEXTVAL, #{cart.b_num}, #{cart.m_num}, #{cart.quan}, #{cart.price} )
+		</foreach>
+	</insert>
+	 -->
+	
+	
+	
+	<delete id="delete_cart_bym_num" parameterType="int" >
+		<![CDATA[
+			DELETE CART WHERE M_NUM=#{m_num}
+		]]>
+	</delete>
+	
+	
+	
+	
+</mapper>
+	

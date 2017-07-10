@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.bms.dao.d_board.BoardDAO">
+	
+
+	
+	<select id="cnt_board" parameterType="String" resultType="int">
+		 SELECT COUNT(*) FROM BOARD 
+		 <where>
+		 	<if test = "_parameter != null and _parameter.equals('NOTICE')">
+		 	AND KIND='NOTICE'
+		 	</if>
+		 </where>
+		  <where>
+		 	<if test = "_parameter != null and _parameter.equals('QnA')">
+		 	AND KIND='QnA'
+		 	</if>
+		 </where>
+		  <where>
+		 	<if test = "_parameter != null and _parameter.equals('FAQ')">
+		 	AND KIND='FAQ'
+		 	</if>
+		 </where>
+		  <where>
+		 	<if test = "_parameter != null and _parameter.equals('EVENT')">
+		 	AND KIND='EVENT'
+		 	</if>
+		 </where>
+	</select>
+	
+	
+	
+	<select id="get_boards" parameterType="java.util.Map" resultType="com.mybatis.bms.dto.BoardDTO">
+		
+		SELECT * 
+		FROM ( SELECT M_NUM, NO, TITLE, WRITER, CONTENT, 
+						REG_DATE, VIEWS, REF, REF_STEP, 
+						REF_LEVEL, KIND, IP, rowNum rNum 
+				FROM ( SELECT * FROM BOARD
+						
+						<where>
+		 					<if test = "kind != null and kind.equals('NOTICE')">
+		 						AND KIND='NOTICE'
+		 					</if>
+						</where>
+						
+						<where>
+		 					<if test = "kind != null and kind.equals('QnA')">
+		 						AND KIND='QnA'
+		 					</if>
+						</where>
+						
+						<where>
+		 					<if test = "kind != null and kind.equals('FAQ')">
+		 						AND KIND='FAQ'
+		 					</if>
+						</where>
+						
+						<where>
+		 					<if test = "kind != null and kind.equals('EVENT')">
+		 						AND KIND='EVENT'
+		 					</if>
+						</where>
+						
+						ORDER BY REF DESC, REF_STEP ASC
+					) 
+				) 
+			<![CDATA[		
+			WHERE rNum >= #{start} AND rNum <= #{end}
+			]]>
+	</select>
+	
+	
+	<select id="get_board" parameterType="int" resultType="com.mybatis.bms.dto.BoardDTO">
+	<![CDATA[
+	 	SELECT * FROM BOARD WHERE NO=#{no}
+	 ]]>
+	 </select>
+	 
+	 
+	 <update id="add_viewcnt" parameterType="int" >
+	 	<![CDATA[
+	 		UPDATE BOARD SET VIEWS=VIEWS+1 WHERE NO=#{no}
+	 	]]>
+	 </update>
+	
+	
+	<select id="check_bym_num" parameterType="int" resultType="com.mybatis.bms.dto.MemberDTO">
+	<![CDATA[
+	 	SELECT * FROM MEMBER WHERE M_NUM=#{mnum}
+	 ]]>
+	 </select>
+	
+	
+	<select id="insert_board_01" resultType="int">
+	<![CDATA[
+	 	SELECT MAX(no) FROM BOARD
+	 ]]>
+	 </select>
+	
+	
+	<update id="insert_board_02" parameterType="java.util.Map" >
+	 	<![CDATA[
+	 		UPDATE BOARD 
+	 		SET REF_STEP = REF_STEP+1  
+			WHERE REF = #{ref} AND REF_STEP > #{ref_step}
+	 	]]>
+	 </update>
+	
+	
+	<insert id="insert_board_03" parameterType="com.mybatis.bms.dto.BoardDTO" >
+		<![CDATA[
+		INSERT INTO BOARD 
+			(NO, M_NUM, TITLE, WRITER, CONTENT, REG_DATE, VIEWS, 
+				REF, REF_STEP, REF_LEVEL, KIND, IP) 
+		VALUES (BOARD_SEQ.NEXTVAL, #{M_NUM}, #{TITLE}, #{WRITER}, 
+			#{CONTENT}, #{REG_DATE}, 0, #{REF}, #{REF_STEP}, 
+			#{REF_LEVEL}, #{KIND}, #{IP} )
+		]]>
+	</insert>
+
+
+
+
+
+	<update id="upadte_board" parameterType="com.mybatis.bms.dto.BoardDTO">
+	<![CDATA[
+	 	UPDATE BOARD SET 
+		TITLE=#{TITLE}, CONTENT=#{CONTENT}, KIND=#{KIND}
+		WHERE NO=#{NO}
+	 ]]>
+	</update>
+	 
+	 
+
+	 
+	 
+	 
+	 <select id="delete_board_01" parameterType="int" resultType="com.mybatis.bms.dto.BoardDTO">
+	<![CDATA[
+	 	SELECT * FROM BOARD WHERE NO=#{NO}
+	 ]]>
+	 </select>
+	 
+	 
+	 
+	 <select id="delete_board_02" parameterType="java.util.Map" resultType="com.mybatis.bms.dto.BoardDTO">
+	<![CDATA[
+	 	SELECT * FROM BOARD 
+		WHERE REF=#{ref} AND REF_STEP=#{ref_step}+1 AND REF_LEVEL>#{ref_level}
+	 ]]>
+	 </select>
+	
+	 
+	 
+	 
+	 
+	 <update id="delete_board_03" parameterType="java.util.Map" >
+	<![CDATA[
+	 	UPDATE BOARD SET REF_STEP=REF_STEP-1 
+		WHERE REF = #{ref} AND REF_STEP > #{ref_step}
+	 ]]>
+	 </update>
+	 
+	 
+	 
+	 <delete id="delete_board_04" parameterType="int" >
+	<![CDATA[
+	 	DELETE BOARD WHERE NO=#{no}
+	 ]]>
+	 </delete>
+	
+
+	
+	
+</mapper>

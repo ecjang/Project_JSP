@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.bms.dao.a_main.MainDAO">
+	
+	
+	<select id="cnt_search" parameterType="String" resultType="int">
+		<![CDATA[
+		SELECT COUNT(B_NUM) FROM BOOK WHERE TITLE LIKE '%'||#{str}||'%'
+		]]>
+	</select>
+	
+	
+	
+	<select id="get_newbooks" parameterType="int" resultType="com.mybatis.bms.dto.BookDTO">
+		<![CDATA[ 
+		SELECT * 
+		FROM ( SELECT B_NUM, TITLE, SUBTITLE, AUTHOR, QUAN,
+					PRICE, REG_DATE, KIND, STATE, rowNum rNum 
+				FROM ( SELECT * FROM BOOK
+						ORDER BY REG_DATE DESC ) )
+		WHERE rNum <= #{cnt}
+		]]>
+	</select>
+	
+
+	<select id="get_searchbooks" parameterType="java.util.Map" resultType="com.mybatis.bms.dto.BookDTO">
+		<![CDATA[
+		SELECT * 
+		FROM ( SELECT B_NUM, TITLE, SUBTITLE, AUTHOR, QUAN,
+					PRICE, REG_DATE, KIND, STATE, rowNum rNum 
+				FROM ( SELECT * FROM BOOK
+						WHERE TITLE LIKE '%'||#{str}||'%'
+				ORDER BY B_NUM ) ) 
+		WHERE rNum >= #{start} AND rNum <= #{end} 
+		]]>				
+	</select>
+	 
+	 
+	<select id="get_book" parameterType="int" resultType="com.mybatis.bms.dto.BookDTO">
+		<![CDATA[
+		SELECT * FROM BOOK WHERE b_num=#{b_num}
+		]]>
+	</select>
+	
+	
+	
+</mapper>

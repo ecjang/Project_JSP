@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.bms.dao.f_order.OrderDAO">
+	
+	
+	<select id="cnt_order" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM BUY
+		]]>
+	</select>
+	
+	
+	<select id="change_orderstate_01" parameterType="com.mybatis.bms.dto.BookDTO" resultType="int">
+		<![CDATA[
+			SELECT QUAN FROM BOOK WHERE B_NUM=#{b_num}
+		]]>
+	</select>
+	
+	
+	<update id="change_orderstate_02" parameterType="com.mybatis.bms.dto.BookDTO">
+		<![CDATA[
+			UPDATE BOOK SET QUAN=(QUAN-#{quan}) WHERE B_NUM=#{b_num}
+		]]>
+	</update>
+	
+	<insert id="change_orderstate_03" parameterType="com.mybatis.bms.dto.BookDTO">
+		<![CDATA[
+			INSERT INTO BUY ( O_NUM , B_NUM, M_NUM, QUAN, PRICE, REG_DATE, STATE )
+			VALUES ( BUY_SEQ.NEXTVAL ,#{b_num},#{m_num},#{quan},#{price},#{reg_date},#{state})
+		]]>
+	</insert>
+	
+	
+	<select id="get_orders" parameterType="java.util.Map" resultType="com.mybatis.bms.dto.OrderDTO">
+		<![CDATA[
+		SELECT * 
+		FROM ( SELECT O_NUM, M.ID M_ID, O.M_NUM, B.TITLE B_TITLE, O.B_NUM,  
+		      O.QUAN, O.PRICE, O.REG_DATE, O.STATE , ROWNUM rNum 
+		      FROM BUY O 
+		      JOIN MEMBER M ON O.M_NUM = M.M_NUM 
+		      JOIN BOOK B   ON O.B_NUM = B.B_NUM ) 
+		WHERE rNum BETWEEN #{start} AND #{end} 
+		ORDER BY O_NUM
+		]]>
+	</select>
+
+	
+	<select id="sum_order" resultType="int">
+		<![CDATA[
+			SELECT sum(price) FROM BUY
+		]]>
+	</select>
+	
+	
+	
+	<select id="input_order_01"  parameterType="int" resultType="int" >
+	<![CDATA[
+		SELECT QUAN FROM BUY WHERE O_NUM=#{o_num}
+	]]>
+	</select>
+	
+	
+	<update id="input_order_02" parameterType="java.util.Map">
+		<![CDATA[
+			UPDATE BOOK SET QUAN=( QUAN + #{quan} ) 
+			WHERE B_NUM = 
+			( SELECT O.B_NUM FROM BUY O  
+			JOIN BOOK B1 ON B1.B_NUM = O.B_NUM 
+			JOIN BOOK B2 ON B2.M_NUM = O.M_NUM
+			WHERE O.O_NUM = #{o_num} )
+		]]>
+	</update>
+	
+	
+	<update id="input_order_03" parameterType="java.util.Map">
+		<![CDATA[
+			DELETE BUY WHERE O_NUM=#{o_num}
+		]]>
+	</update>
+	
+	
+	
+	<update id="input_order_04" parameterType="java.util.Map">
+		<![CDATA[
+			UPDATE BUY SET STATE=#{state} WHERE O_NUM = #{o_num} 
+		]]>
+	</update>
+	
+	
+	
+	
+	
+	
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.bms.dao.b_member.MemberDAO">
+	
+	
+	<select id="check_login" parameterType="java.util.Map" resultType="com.mybatis.bms.dto.MemberDTO">
+		<![CDATA[ 
+		SELECT * FROM MEMBER WHERE id=#{id}
+		]]>
+	</select>
+	
+	<select id="check_login_bymnum" parameterType="int" resultType="com.mybatis.bms.dto.MemberDTO">
+		<![CDATA[ 
+		SELECT * FROM MEMBER WHERE M_NUM = #{Mnum}
+		]]>
+	</select>
+	
+	
+	
+	<select id="cnt_member"  resultType="int">
+		<![CDATA[ 
+		SELECT COUNT(ID) FROM MEMBER
+		]]>
+	</select>
+	
+	<select id="check_id" parameterType="String" resultType="int">
+		<![CDATA[
+			SELECT COUNT(ID) FROM MEMBER WHERE id=#{id}
+		]]>
+	</select>
+
+	
+	<insert id="insert_member" parameterType="com.mybatis.bms.dto.MemberDTO" >
+		<![CDATA[
+			INSERT INTO MEMBER 
+			(M_NUM, ID, PW, NAME, JUMIN1, jumin2, HP, EMAIL, REG_DATE, KIND)
+			VALUES(mem_seq.NEXTVAL,#{id},#{pw},#{name},#{jumin1},#{jumin2},#{hp},#{email},#{reg_date},#{kind})
+		]]>
+	</insert>
+	
+	
+	<delete id="delete_member" parameterType="String">
+		<![CDATA[
+			DELETE MEMBER WHERE ID = #{id}
+		]]>
+	</delete>
+	
+	
+	
+	<select id="get_member" parameterType="String" resultType="int">
+		<![CDATA[
+			SELECT count(ID) FROM MEMBER WHERE id=#{id}
+		]]>
+	</select>
+	
+	<update id="update_member" parameterType="com.mybatis.bms.dto.MemberDTO">
+		<![CDATA[
+			UPDATE MEMBER SET PW=#{pw}, HP=#{hp}, EMAIL=#{email} WHERE id=#{id}
+		]]>
+	</update>
+	
+</mapper>
